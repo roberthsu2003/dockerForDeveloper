@@ -48,7 +48,7 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker run --name python-learning-container -it -d python-learning-image:v01 
 	
-1.查詢目前running的container
+- 查詢目前running的container
 
 	docker ps
 	
@@ -71,3 +71,9 @@ CMD ["tail", "-f", "/dev/null"]
 5.刪除container
 
 	docker container rm python-learning-container
+	
+### 建立docker container 並同時使用volumes
+
+	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image
+
+

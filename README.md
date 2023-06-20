@@ -8,10 +8,20 @@
   
 ## 2. Dockerize an App
 
-- [此Dockerfile是建立一個python學習的環境](1.建立pyhton學習環境)
+- [建立一個python學習的環境](1.建立pyhton學習環境)
 
   
 ## 3. Immediate file changes(Volumes)
+- volumes可設定本機資料夾為container所管理的資料夾
+- 在docker run 時建立Volumes 
+
+```
+ docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+```
+
 
 ## 4. Use IDE In Docker
 ## 5. Docker Compose
