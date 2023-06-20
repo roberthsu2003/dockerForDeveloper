@@ -40,11 +40,11 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker run --name python-learning-container -it -d python-learning-image:v01 
 	
-1.查詢目前running的container
+1.查詢目前running的container
 
 	docker ps
 	
-1.查詢目前running的container
+1.查詢目前running的container
 
 	docker container ls
 	
