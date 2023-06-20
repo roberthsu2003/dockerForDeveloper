@@ -48,7 +48,7 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker run --name python-learning-container -it -d python-learning-image:v01 
 	
-- 查詢目前running的container
+1.查詢目前running的container
 
 	docker ps
 	
@@ -76,4 +76,14 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image
 
+### 使用docker compose建立volumes
+
+```
+services:
+  app:
+    build: .
+    container_name: python-server
+    volumes:
+      - .:/code
+```
 
