@@ -88,4 +88,82 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
 
 ### 使用docker compose建立volumes
 
+- 建立docker-compose.yml
 
+```
+services:
+  app:
+    build: .
+    container_name: fastapi-container_name
+    command: uvicorn src.main:app --host 0.0.0.0 --port 80 --reload
+    ports:
+      - 80:80
+    volumes:
+      - .:/code
+```
+
+- 執行docker-compose.yml
+
+```
+docker-compose up
+```
+
+- 移除docker-compose建立的container
+
+```
+docker-compose down
+```
+
+### 增加redis資料庫
+
+- 修改docker-compose.yml
+
+```
+services:
+  app:
+    build: .
+    container_name: fastapi-container_name
+    command: uvicorn src.main:app --host 0.0.0.0 --port 80 --reload
+    ports:
+      - 80:80
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+    
+  redis:
+    image: redis:alpine
+```
+
+### 執行docker-compose
+- 由於image的內容會有改變,所以必需要重新build
+
+```
+docker-compose up --build -d
+```
+
+### 修改main.py
+
+```
+from fastapi import FastAPI
+import redis
+
+app = FastAPI()
+
+r = redis.Redis(host='redis', port=6379)
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World123"}
+
+@app.get("/hits")
+def read_root():
+    r.incr('hits')
+    return {"number of hits": r.get('hits')}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id, q = None):
+    return {"item_id": item_id, "q": q}
+```
