@@ -1,9 +1,16 @@
 ### 工作區建立
-- 建立一個空的requirements.txt
+
+- 建立一個requirements.txt
+
+```
+fastapi
+uvicorn
+redis
+```
 
 ### 建立pyhton學習環境
 
-- Dockerfile
+- 建立Dockerfile
   
 ```Dockerfile
 
@@ -77,16 +84,7 @@ CMD ["tail", "-f", "/dev/null"]
 	
 ### 建立docker container 並同時使用volumes
 
-	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image
-
+	
 ### 使用docker compose建立volumes
 
-```
-services:
-  app:
-    build: .
-    container_name: python-server
-    volumes:
-      - .:/code
-```
 
