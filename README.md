@@ -9,6 +9,7 @@
 ## 2. Dockerize an App
 
 - [建立一個python學習的環境](1.建立pyhton學習環境)
+- [建立fastapi和redis](2.建立fastapi和redis)
 
   
 ## 3. Immediate file changes(Volumes)

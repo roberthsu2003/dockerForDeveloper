@@ -16,31 +16,21 @@ redis
 
 FROM python:3.10-slim
 
-# set the working directory
 WORKDIR /code
 
-# install dependencies
 COPY ./requirements.txt ./
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-# 安裝git
-# RUN apt-get update && \
-#    apt-get upgrade -y && \
-#    apt-get install -y git
-#
-# RUN git config --global user.name "robertHsu"
-# RUN git config --global user.email "roberthsu2003@gmail.com"
-# RUN git config --global init.defaultBranch main
-# RUN git init
+RUN pip install --no-cache-dir -r requirements.txt
 
-# start the server
-CMD ["tail", "-f", "/dev/null"]
+COPY ./src ./src
+
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
 
 ```
 
 ###  建立docker Image
 
-    docker build -t python-learning-image:v01 .
+    docker build -t fastapi-image .
 
 1.查看docker images
 	
@@ -52,11 +42,16 @@ CMD ["tail", "-f", "/dev/null"]
 	
 2.刪除docker images
 
-	docker image rm python-learning-image:v01
+	docker image rm fastapi-image
 	
 ### 建立docker container
 
-	docker run --name python-learning-container -it -d python-learning-image:v01 
+	docker run --name fastapi-container  -p 80:80  fastapi-image
+	
+-背景執行
+
+	docker run --name fastapi-container  -d -p 80:80  fastapi-image
+	
 	
 1.查詢目前running的container
 
@@ -72,19 +67,25 @@ CMD ["tail", "-f", "/dev/null"]
 	
 3.停止conatiner
 
-	docker container stop python-learning-container
+	docker container stop fastapi-container
 	
 4.啟動container
 
-	docker container start python-learning-container
+	docker container start fastapi-container
 	
 5.刪除container
 
-	docker container rm python-learning-container
+	docker container rm fastapi-container
 	
 ### 建立docker container 並同時使用volumes
 
-	
+	docker run --name fastapi-container -p 80:80 -d -v $(pwd):/code fastapi-images	
+
+### 使用vscode 連結至正在執行的容器
+
+- 安裝 python extension
+
+
 ### 使用docker compose建立volumes
 
 
