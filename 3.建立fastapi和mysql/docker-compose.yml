@@ -1,0 +1,29 @@
+services:
+  app:
+    container_name: fastapi_server
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/code/src      
+    depends_on:
+      - db
+
+  db:
+    container_name: mysql_db
+    image: mysql
+    #設定時區
+    command: ['mysqld','--default-time-zone=+08:00']
+    restart: always
+    environment:
+      MYSQL_DATABASE: mysql_db
+      MYSQL_ROOT_PASSWORD: admin
+      TZ: CST    
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    
+    
