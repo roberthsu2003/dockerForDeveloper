@@ -9,7 +9,7 @@
 		"ghcr.io/devcontainers/features/github-cli:1": {},
 		"ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {}
 	},
-	"postCreateCommand": "pip install -r requirements.txt && uvicorn src.main:app --reload",
+	"postCreateCommand": "pip install -r requirements.txt",
 	"customizations": {
 		"vscode": {
 			"extensions": [
