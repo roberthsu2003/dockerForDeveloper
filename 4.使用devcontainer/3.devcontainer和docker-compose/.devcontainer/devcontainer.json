@@ -1,13 +1,21 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/postgres
 {
-	"name": "Python 3 & PostgreSQL",
+	"name": "Fastapi & Redis",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspaces/4.使用devcontainer/${localWorkspaceFolderBasename}",
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {},
 		"ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {}
+	},
+	"postCreateCommand": "pip install -r requirements.txt && uvicorn src.main:app --reload",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
