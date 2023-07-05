@@ -24,6 +24,8 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ../redis:/data
+    ports:
+      - 6379:6379
 
     
 

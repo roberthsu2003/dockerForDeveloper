@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/python:1-3.10-bookworm
-
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 ENV PYTHONUNBUFFERED 1
 
 # [Optional] If your requirements rarely change, uncomment this section to add them to the image.
