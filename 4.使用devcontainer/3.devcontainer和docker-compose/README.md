@@ -141,6 +141,9 @@ ENV PYTHONUNBUFFERED 1
 #### RUN pip install -r requirements.txt
 - 執行docker內,根目錄的requirements.txt
 
+### 安裝redisinsight,管理redis
+![](./images/pic1.png)
+
 
       
 
