@@ -11,6 +11,8 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
+    env_file:
+      - redis.env
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
@@ -19,13 +21,16 @@ services:
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   db:
-    image: redis    
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+    image: redis
+    restart: always        
     volumes:
       - ../redis:/data
     ports:
-      - 6379:6379
+      - 6379:6379 
+    env_file:
+      - redis.env     
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
+    
 
     
 
