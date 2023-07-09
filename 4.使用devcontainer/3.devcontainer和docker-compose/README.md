@@ -63,7 +63,8 @@ services:
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   db:
-    image: redis
+    image: redis/redis-stack
+    container_name: redis_for_python
     restart: always        
     volumes:
       - ../redis:/data
@@ -71,7 +72,7 @@ services:
       - 6379:6379 
     env_file:
       - redis.env     
-    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
+    command: /bin/sh -c "redis-stack-server --requirepass $$REDIS_HOST_PASSWORD"
     
 ```
 
