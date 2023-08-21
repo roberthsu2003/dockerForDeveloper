@@ -23,6 +23,15 @@ $ DISM /Online /Enable-Feature /All /FeatureName:Microsoft-Hyper-V
 $ bcdedit /set hypervisorlaunchtype auto
 ```
 
+## 使用WSL2.0,設定使用WSL2.0
+- power shell下2段指令
+
+```
+$ Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform, Microsoft-Windows-Subsystem-Linux
+
+$ wsl --set-default-version 2
+```
+
 ## 使用Vmware Fution安裝的windows,必需設定virtual machine:
 
 - 請打勾 : processors & memory -> 進階選項 -> 在此虛擬機器中啟用超級監督者應用程式
