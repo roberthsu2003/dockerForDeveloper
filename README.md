@@ -1,4 +1,36 @@
 # Docker python開發者環境建立
+## windows 安裝 wsl2 的方式(注意事項)
+- 只有安裝wsl2後才可以安裝docker
+- 使用power shell
+
+```
+
+$ wsl --install
+或
+$ wls --update
+
+```
+
+- 確認:控制台->程式集->程式和功能->開啟或關閉windows功能
+![](./images/pic1.png)
+
+- 如果Hyer-V無法勾選,請在power-shell輸入以下2行指令
+
+```
+
+$ DISM /Online /Enable-Feature /All /FeatureName:Microsoft-Hyper-V
+
+$ bcdedit /set hypervisorlaunchtype auto
+```
+
+## 使用Vmware Fution安裝的windows,必需設定virtual machine:
+
+- 請打勾 : processors & memory -> 進階選項 -> 在此虛擬機器中啟用超級監督者應用程式
+
+![](./images/pic2.png)
+
+![](./images/pic3.png)
+
 ## 1. 為何要使用Docker?(Why Docker?)
 - ***建立虛擬環境***
 - ***建立完全獨立環境專案,並提供該專案所有附屬套件***
