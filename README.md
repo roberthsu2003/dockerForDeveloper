@@ -7,7 +7,7 @@
 
 $ wsl --install
 或
-$ wls --update
+$ wsl --update
 
 ```
 
