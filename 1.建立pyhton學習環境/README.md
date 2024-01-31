@@ -17,14 +17,14 @@ COPY ./requirements.txt ./
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # 安裝git
-# RUN apt-get update && \
-#    apt-get upgrade -y && \
-#    apt-get install -y git
-#
-# RUN git config --global user.name "robertHsu"
-# RUN git config --global user.email "roberthsu2003@gmail.com"
-# RUN git config --global init.defaultBranch main
-# RUN git init
+#RUN apk update
+#RUN apk upgrade
+#RUN apk add git
+
+#RUN git config --global user.name "robertHsu"
+#RUN git config --global user.email "roberthsu2003@gmail.com"
+#RUN git config --global init.defaultBranch main
+#RUN git init
 
 # start the server
 CMD ["tail", "-f", "/dev/null"]

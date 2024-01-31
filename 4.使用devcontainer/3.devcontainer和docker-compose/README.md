@@ -1,6 +1,7 @@
 # devcontainer 和 docker-compose的整合
 ## 建立fastapi和redis整合專合
 ### devcontainer.json
+
 ```json
 {
 	"name": "Fastapi & Redis",
