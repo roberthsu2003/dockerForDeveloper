@@ -82,6 +82,7 @@ CMD ["tail", "-f", "/dev/null"]
 ### 使用docker compose建立volumes
 
 ```
+version: "3.8"
 services:
   app:
     build: .
@@ -90,3 +91,20 @@ services:
       - .:/code
 ```
 
+##### 啟動docker-compose
+
+```
+docker-compose up
+```
+	
+
+##### 關閉docker-compose
+- container會被清除
+
+```
+Docker-compose down
+```
+
+### 清理docker
+
+	docker system prune

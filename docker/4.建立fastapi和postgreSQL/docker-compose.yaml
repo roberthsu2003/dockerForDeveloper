@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  streamlit:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: streamlit-app
+
+    volumes:
+      - .:/code
+    
+    ports:
+      - "80:80"
+      - "8501:8501"
+
+  
+  postgres:
+    image: postgres:13.2-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:
+
+    
+
+    
+    
+
