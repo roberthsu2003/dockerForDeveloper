@@ -1,6 +1,7 @@
 # Docker python開發者環境建立
 ## windows 安裝 wsl2 的方式(注意事項)
 - 只有安裝wsl2後才可以安裝docker
+- PC BIOS Virtualization 必需開啟 
 - 使用power shell
 
 ```
