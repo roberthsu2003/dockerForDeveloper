@@ -14,6 +14,10 @@ services:
       - "80:80"
       - "8501:8501"
 
+    depends_on:
+      - postgres
+    
+
   
   postgres:
     image: postgres:13.2-alpine
@@ -23,8 +27,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data
+      DB_HOST: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
+    
     ports:
       - "5432:5432"
 

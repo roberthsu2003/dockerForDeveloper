@@ -1,2 +1,3 @@
 requests
 streamlit
+psycopg2-binary
