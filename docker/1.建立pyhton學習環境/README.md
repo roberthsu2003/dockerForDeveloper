@@ -1,7 +1,7 @@
-### 工作區建立
+### 1. 工作區建立
 - 建立一個空的requirements.txt
 
-### 建立pyhton學習環境
+### 2. 建立pyhton學習環境
 
 - Dockerfile
   
@@ -31,7 +31,7 @@ CMD ["tail", "-f", "/dev/null"]
 
 ```
 
-###  建立docker Image
+###  3. 建立docker Image
 
     docker build -t python-learning-image:v01 .
 
@@ -47,7 +47,7 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker image rm python-learning-image:v01
 	
-### 建立docker container
+### 4. 建立docker container(沒有建立Volumns)
 
 	docker run --name python-learning-container -it -d python-learning-image:v01 
 	
@@ -75,9 +75,11 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker container rm python-learning-container
 	
-### 建立docker container 並同時使用volumes
+### 4. 建立docker container 並同時使用volumes
 
 	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image
+	
+### 5. 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用vscode開發容器
 
 ### 使用docker compose建立volumes
 
