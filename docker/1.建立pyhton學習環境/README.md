@@ -79,7 +79,16 @@ CMD ["tail", "-f", "/dev/null"]
 
 	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image
 	
-### 5. 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用vscode開發容器
+### 5. 執行container的shell
+#### 5.1 方法1 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用attach shell
+#### 5.2 方法2 
+
+```bash
+docker exec -it container名稱 /bin/bash
+```
+
+### 6.在container安裝openssh-server
+[參考影片](https://youtu.be/GicWz2OF0sk?si=siBDADg6V9xPxeLv)
 
 ### 使用docker compose建立volumes
 
