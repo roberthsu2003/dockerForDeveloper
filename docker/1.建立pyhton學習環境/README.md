@@ -77,7 +77,7 @@ CMD ["tail", "-f", "/dev/null"]
 	
 ### 4. 建立docker container 並同時使用volumes
 
-	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image
+	docker run --name python-learning-container -itd -v $(pwd):/code python-learning-image -p 2200:22
 	
 ### 5. 執行container的shell
 #### 5.1 方法1 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用attach shell
