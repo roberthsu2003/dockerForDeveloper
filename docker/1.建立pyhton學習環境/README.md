@@ -69,10 +69,14 @@ CMD ["tail", "-f", "/dev/null"]
 	
 ### 4. 建立docker container 並同時使用volumes和開啟ssh port
 
-	docker run --name python-learning-container -itd -v $(pwd):/code -p 2200:22 python-learning-image 
-	
+```bash
+docker run --name python-learning-container -itd -v $(pwd):/code -p 2200:22 python-learning-image
+```
+
 ### 5. 執行container的shell
+
 #### 5.1 方法1 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用attach shell
+
 #### 5.2 方法2 
 
 ```bash
