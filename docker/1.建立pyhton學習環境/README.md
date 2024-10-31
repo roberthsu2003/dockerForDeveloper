@@ -1,7 +1,10 @@
-### 1. 工作區建立
+# 開發環境建立
+
+## 1. 工作區建立
+
 - 建立一個空的requirements.txt
 
-### 2. 建立pyhton學習環境
+## 2. 建立pyhton學習環境
 
 - Dockerfile
   
@@ -23,74 +26,98 @@ CMD ["tail", "-f", "/dev/null"]
 
 ```
 
-###  3. 建立docker Image
+## 3. 建立docker Image
 
+```bash
     docker build -t python-learning-image:v01 .
+```
 
-1.查看docker images
-	
-	docker images
+- **3.1 看docker images**
 
-1.查看docker images
+```bash
+ docker images
+```
 
-	docker image ls
-	
-2.刪除docker images
+- **3.2 查看docker images**
 
-	docker image rm python-learning-image:v01
-	
-### 4. 建立docker container(沒有建立Volumns)
+```bash
+docker image ls
+```
 
-	docker run --name python-learning-container -it -d python-learning-image:v01 
-	
-1.查詢目前running的container
+- **3.3 刪除docker images**
 
-	docker ps
-	
-1.查詢目前running的container
+```bash
+docker image rm python-learning-image:v01
+```
 
-	docker container ls
-	
-2.查詢目前所有的container
+## 4. 建立docker container(沒有建立Volumns)
 
-	docker ps -a
-	
-3.停止conatiner
+```bash
+ docker run --name python-learning-container -it -d python-learning-image:v01 
+```
 
-	docker container stop python-learning-container
-	
-4.啟動container
+- **4.1 查詢目前running的container**
 
-	docker container start python-learning-container
-	
-5.刪除container
+```bash
+docker ps
+```
 
-	docker container rm python-learning-container
-	
-### 4. 建立docker container 並同時使用volumes和開啟ssh port
+- **4.2 查詢目前running的container**
+
+```bash
+docker container ls
+```
+
+- **4.3 查詢目前所有的container**
+
+```bash
+docker ps -a
+```
+
+- **4.4 停止conatiner**
+
+```bash
+docker container stop python-learning-container
+```
+
+- **4.5 啟動container**
+
+```bash
+docker container start python-learning-container
+```
+
+- **4.6 刪除container**
+
+```bash
+docker container rm python-learning-container
+```
+
+## 5. 建立docker container 並同時使用volumes和開啟ssh port
 
 ```bash
 docker run --name python-learning-container -itd -v $(pwd):/code -p 2200:22 python-learning-image
 ```
 
-### 5. 執行container的shell
+## 6. 執行container的shell
 
-#### 5.1 方法1 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用attach shell
+- **6.1 方法1 利用vscode 擴充套件docker,找到container,按右鍵並選擇使用attach shell**
 
-#### 5.2 方法2 
+- **6.2 方法2**
 
 ```bash
 docker exec -it container名稱 /bin/bash
 ```
 
-### 6.在container安裝openssh-server
+## 7. 在container安裝openssh-server
+
 [參考影片](https://youtu.be/GicWz2OF0sk?si=siBDADg6V9xPxeLv)
 
-## Dockerfile建立python學習環境,並且同時安裝git,openssh-server
- - ssh連線,user=root
- - ssh連線,password=root
+## 8. Dockerfile建立python學習環境,並且同時安裝git,openssh-server
 
-### 7.1 Dockerfile
+- ssh連線,user=root
+- ssh連線,password=root
+
+### 8.1 Dockerfile
 
 ```dockerfile
 FROM python:3.12.4-bookworm
@@ -119,33 +146,33 @@ EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 ```
 
-### 7.2 建立image:python_env
+### 8.2 建立image:python_env
 
 ```bash
 docker build -t python_env .
 ```
 
-### 7.3 建立docker container 並同時使用volumes和開啟ssh port
+### 8.3 建立docker container 並同時使用volumes和開啟ssh port
 
 ```bash
 docker run --name python_env_container -itd -v $(pwd):/code -p 2200:22 python_env 
 ```
 
-### 7.4 查看container執行時,是否有出錯
+### 8.4 查看container執行時,是否有出錯
 
 ```bash
 docker logs python_env_container
 ```
 
-### 7.5 ssh連線至container
+### 8.5 ssh連線至container
 
-```
+```bash
 ssh root@127.0.0.1 -p 2200
 ```
 
-## 使用docker compose建立volumes
+## 9. 使用docker compose建立volumes
 
-```
+```bash
 version: "3.8"
 services:
   app:
@@ -155,20 +182,22 @@ services:
       - .:/code
 ```
 
-##### 啟動docker-compose
+### 9.1 啟動docker-compose
 
-```
+```bash
 docker-compose up
 ```
-	
 
-##### 關閉docker-compose
-- container會被清除
+### 9.2 關閉docker-compose
 
-```
+- **container會被清除**
+
+```bash
 Docker-compose down
 ```
 
-### 清理docker
+### 9.3 清理docker
 
-	docker system prune
+```bash
+docker system prune
+```
