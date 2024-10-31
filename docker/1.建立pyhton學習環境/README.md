@@ -32,22 +32,30 @@ CMD ["tail", "-f", "/dev/null"]
     docker build -t python-learning-image:v01 .
 ```
 
-- **3.1 看docker images**
+- **3.1 看docker image**
 
 ```bash
  docker images
 ```
 
-- **3.2 查看docker images**
+- **3.2 查看docker image**
 
 ```bash
 docker image ls
 ```
 
-- **3.3 刪除docker images**
+- **3.3 刪除docker image**
 
 ```bash
 docker image rm python-learning-image:v01
+```
+
+- **3.4 上傳docker image**
+
+  - **注意,如果要上傳到docker hub,建立的image必需前面包含github帳號**
+
+```bash
+docker push <您的docker hub 帳號>/<image name>
 ```
 
 ## 4. 建立docker container(沒有建立Volumns)
