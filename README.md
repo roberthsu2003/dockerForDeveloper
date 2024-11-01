@@ -15,7 +15,7 @@
 - 容易部署和發佈
 - 讓共同開發者在不同平台有**相同開發環境**
   
-## [Dockfile的架構](./docker_file)
+## 3. [Dockfile的架構](./docker_file)
 
 ## 4. [docker build指令常用的參數](./docker_build)
 
