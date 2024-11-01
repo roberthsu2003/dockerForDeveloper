@@ -1,35 +1,60 @@
 # 開發環境建立
 
-## 1. 工作區建立
 
-- 建立一個空的requirements.txt
 
-## 2. 建立pyhton學習環境
+## 1. 建立環境變數
+
+**1.1 mac建立環境變數**
+
+```bash
+#檢查所有環境變數
+$ env
+
+#檢查單1個環境變數
+$ echo $HOME
+
+#建立環境變數
+$ export REPO_NAME=<repo名稱>
+$ export REPO_PATH=${HOME}/Documents/GitHub/<repo名稱>
+```
+
+**1.2 windows cmd 建立環境變數**
+
+```
+#檢查所有環境變數
+$ set
+
+#檢查單1個環境變數
+
+$ echo %VARIABLE_NAME%
+
+#建立環境變數
+$ set REPO_NAZME=<repo名稱>
+$ set REPO_PATH=%USERPROFILE%\Documents\GitHub\%REPO_NAME%
+```
+
+## 2. 建立pyhton學習環境Dockerfile
 
 - Dockerfile
   
 ```Dockerfile
+FROM python:3.11.10-bookworm
 
-FROM python:3.10-slim
+#定義常數
+ARG REPO_NAME
 
 # set the working directory
-WORKDIR /code
-
-# install dependencies
-COPY ./requirements.txt ./
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
+WORKDIR /root/${REPO_NAME}
 
 
 # start the server
 CMD ["tail", "-f", "/dev/null"]
-
 ```
 
 ## 3. 建立docker Image
 
 ```bash
-    docker build -t python-learning-image:v01 .
+$ docker build -t --build-arg REPO_NAME=${REPO_NAME} host<dockerHub_USER_NAME>/<image_名稱>:v01 .
 ```
 
 - **3.1 看docker image**
@@ -61,7 +86,8 @@ docker push <您的docker hub 帳號>/<image name>
 ## 4. 建立docker container(沒有建立Volumns)
 
 ```bash
- docker run --name python-learning-container -it -d python-learning-image:v01 
+ docker run --name python-learning-container -it -d python-learning-image:v01
+ docker run --name <container名稱> -itd -v ${REPO_PATH}:/root/${REPO_NAME} -p 2200:22 <image名稱>
 ```
 
 - **4.1 查詢目前running的container**
