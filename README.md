@@ -15,34 +15,25 @@
 - 容易部署和發佈
 - 讓共同開發者在不同平台有**相同開發環境**
   
-## 3. 建立python的開發環境
-
-- [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
-- [建立fastapi和redis](./docker/2.建立fastapi和redis)
+## Dockfile的架構
 
 ## 4. [docker build指令常用的參數](./docker_build)
 
 ## 5. [docker run指令常用的參數](./docker_run)
 
-## 6. 建立ollama的docker
+## 6. 建立python的開發環境
+
+- [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
+- [建立fastapi和redis](./docker/2.建立fastapi和redis)
+
+## 7. 建立ollama的docker
 - [建立ollama服務的docker](./ollama)
 - [使用python呼叫ollama的api](./ollama/olloma.md)
 
-## 7. Immediate file changes(Volumes)
 
-- volumes可設定本機資料夾為container所管理的資料夾
-- 在docker run 時建立Volumes
+## 8. Docker Compose
 
-```bash
- docker run -d \
-  --name devtest \
-  -v myvol2:/app \
-  nginx:latest
-```
-
-## 8. Use IDE In Docker
-
-## 9. Docker Compose
+## 9. Docker network
 
 ## 10. Add more services
 
