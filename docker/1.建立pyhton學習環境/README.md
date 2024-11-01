@@ -86,9 +86,24 @@ docker push <您的docker hub 帳號>/<image name>
 ## 4. 建立docker container(沒有建立Volumns)
 
 ```bash
- docker run --name python-learning-container -it -d python-learning-image:v01
- docker run --name <container名稱> -itd -v ${REPO_PATH}:/root/${REPO_NAME} -p 2200:22 <image名稱>
+ docker run --name <container名稱> -itd <docker_hup user_name>/<images名稱>
 ```
+
+## 4. 建立docker container 並同時使用volumes和開啟ssh port
+- **使用$(command name)**
+
+```bash
+docker run --name <container名稱> -itd -v $(pwd):/code -p 2200:22 <docker_hup user_name>/<images名稱>
+```
+
+## 4. 建立docker container 並同時使用volumes和開啟ssh port
+- **使用${環境變數名稱}**
+
+```bash
+docker run --name <container名稱> -itd -v $(pwd):/code -p 2200:22 <docker_hup user_name>/<images名稱>
+```
+
+
 
 - **4.1 查詢目前running的container**
 
