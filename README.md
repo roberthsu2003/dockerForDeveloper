@@ -15,10 +15,14 @@
 - 容易部署和發佈
 - 讓共同開發者在不同平台有***相同開發環境***
   
-## 2. Dockerize an App
+## 2. 建立python的開發環境
 
 - [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
 - [建立fastapi和redis](./docker/2.建立fastapi和redis)
+
+## 4. 建立ollama的docker
+- [建立ollama服務的docker](./ollama)
+- [使用python呼叫ollama的api](./ollama/olloma.md)
 
 ## 3. Immediate file changes(Volumes)
 
