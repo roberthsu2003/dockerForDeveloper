@@ -39,4 +39,4 @@
 
 ## 11. Debug Python code inside Docker
 
-## 12. [Dev containter](./使用devcontainer)
+## 12. [VSCode devcontainter](./使用devcontainer)
