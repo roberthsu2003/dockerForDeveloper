@@ -1,5 +1,10 @@
 # 建立一般python開發環境
 
+## 執行devcontainer.json前的需求
+- git init(從github下載後就已經有git init)
+- 必需建立一個requirements.txt
+
+## devcontainer建立的container有以下的設定
 - debian bookworm作業系統
 - python3.11
 - 安裝git
@@ -7,6 +12,8 @@
 - 更新pip
 - 安裝requirements.txt
 - git初始化設定
+- 安裝vscode的套件-繁體中文套件,python開發套件,jupyter notebook開發套件
+- 使用者名稱改為root
 
 以下是devcontainer.json內容說明
 
