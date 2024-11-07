@@ -7,8 +7,8 @@ Dockerfile 是一個包含建立 Docker 容器映像指示的文字檔。它可�
 **Dockerfile 由指令和參數組成,格式如下:**
 
 ```dockerfile
-	# Comment
-	INSTRUCTION arguments
+# Comment
+INSTRUCTION arguments
 ```
 
 Dockerfile 通常由以下幾部分組成：
@@ -25,67 +25,67 @@ Dockerfile 通常由以下幾部分組成：
 - **FROM**: 定義基礎映像，必須是 Dockerfile 的第一條指令。
   
 ```dockerfile
-	FROM ubuntu:20.04
+FROM ubuntu:20.04
 ```
 
 - **MAINTAINER**: 指定維護者的聯絡資訊（現在建議使用 LABEL 替代）。
   
 ```dockerfile
-	MAINTAINER your_name <your_email@example.com>
+MAINTAINER your_name <your_email@example.com>
 ```
   
 - **WORKDIR**: 設定後續指令的工作目錄
 
 ```dockerfile
-	WORKDIR /app
+WORKDIR /app
 ```
 
 - **COPY**: 將檔案從主機複製到映像中。
   
-  ```dockerfile
-  COPY ./requirements.txt ./
-  ```
+```dockerfile
+COPY ./requirements.txt ./
+```
 
 - **ADD**: 與 COPY 類似，但可以自動解壓縮 tar 檔案或從 URL 複製檔案。
   
-  ```dockerfile
-  ADD https://example.com/file.tar.gz ./
-  ```
+```dockerfile
+ADD https://example.com/file.tar.gz ./
+```
 
 
 - **RUN**: 執行命令，通常用於安裝應用程式或執行其他必要的配置。
   
 ```dockerfile
-	RUN apt-get update && \
-			apt-get install -y python3
+RUN apt-get update && \
+		apt-get install -y python3
 ```
   
   - **EVN**: 設定環境變數
 
 ```dockerfile
-	ENV NODE_ENV=production \
-	    PORT=3000
+ENV NODE_ENV=production \
+	PORT=3000
 ```
 
 - **EXPOSE**: 設定開放port，以便外部訪問。
   
 ```dockerfile
-	EXPOSE 80
+EXPOSE 80
 ```
 
 
 
 - **CMD**: 指定容器啟動時執行的命令。每個 Dockerfile 最多只能有一條 CMD 指令。
   
-  ```dockerfile
-  CMD ["nginx", "-g", "daemon off;"]
-  ```
+```dockerfile
+CMD ["nginx", "-g", "daemon off;"]
+```
 
 - **ENTRYPOINT**: 設置容器啟動後執行的命令，與 CMD 不同的是，ENTRYPOINT 不會被 docker run 提供的參數覆蓋。
   
-  ```dockerfile
-  ENTRYPOINT ["python"]
-  ```
+```dockerfile
+ENTRYPOINT ["python"]
+```
 
 
 ### 使用範例1
