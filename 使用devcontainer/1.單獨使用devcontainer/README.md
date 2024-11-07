@@ -18,30 +18,31 @@
 以下是devcontainer.json內容說明
 
 ```json
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/python
+//格式的詳細資訊，請參閱 https://aka.ms/devcontainer.json。有關設定選項，請參閱
+// README，網址為：https://github.com/devcontainers/templates/tree/main/src/python
 {
+	//name是這個devcontainer.json的名字,不重要
 	"name": "Python 3",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	//安裝debain bookworm,python3.11
 	"image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
 	"features": {
+		//系統要安裝git
 		"ghcr.io/devcontainers/features/git:1": {}
 	},
+	//設定container名稱為python_chilhlee_api
 	"runArgs":["--name","python_chilhlee_api"],
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	
+	//使用「forwardPorts」可使容器內的連接埠清單在本機可用。 
 	// "forwardPorts": [],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
+	//使用「postCreateCommand」可在容器建立後執行指令。
 	"postCreateCommand": "pip install --upgrade pip && pip3 install --user -r requirements.txt && git config --global user.name \"roberthsu2003\" && git config --global user.email \"roberthsu2003@gmail.com\"",
+
 
 		
 	
 
-	// Configure tool-specific properties.
+	//安裝VSCode套件
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -52,7 +53,7 @@
 		}
 	},
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	//設定使用者為root,系統建議不要設為root,可以註解,使用內建的方式設定
 	"remoteUser": "root"
 }
 
