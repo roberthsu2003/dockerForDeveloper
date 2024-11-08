@@ -54,7 +54,7 @@ CMD ["tail", "-f", "/dev/null"]
 ## 3. 建立docker Image
 
 ```bash
-$ docker build -t --build-arg REPO_NAME=${REPO_NAME} host<dockerHub_USER_NAME>/<image_名稱>:v01 .
+$ docker build --build-arg REPO_NAME=${REPO_NAME} -t host<dockerHub_USER_NAME>/<image_名稱>:v01 .
 ```
 
 - **3.1 看docker image**
