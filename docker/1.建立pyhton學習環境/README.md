@@ -161,12 +161,34 @@ docker exec -it container名稱 /bin/bash
 
 [參考影片](https://youtu.be/GicWz2OF0sk?si=siBDADg6V9xPxeLv)
 
-## 8. Dockerfile建立python學習環境,並且同時安裝git,openssh-server
+## 8. 實際案例
+## 8.1 建立python學習環境,同時安裝miniconda,git,並且使用下載的REPO資料夾
+
+```bash
+export REPO_NAME=LLMs-API
+echo $REPO_NAME
+```
+
+## 建立Docker file
+
+```bash
+docker build --build-arg REPO_NAME=${REPO_NAME} -t roberthsu2003/llms-api:v01
+```
+
+
+## 建立Container
+
+```bash
+docker run --name llms-api -itd -v $(pwd):/root/${REPO_NAME} roberthsu2003/llms-api:v01
+```
+
+
+## 9.1 Dockerfile建立python學習環境,並且同時安裝git,openssh-server
 
 - ssh連線,user=root
 - ssh連線,password=root
 
-### 8.1 Dockerfile
+### 9.1 Dockerfile
 
 ```dockerfile
 FROM python:3.12.4-bookworm
@@ -195,31 +217,31 @@ EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 ```
 
-### 8.2 建立image:python_env
+### 9.2 建立image:python_env
 
 ```bash
 docker build -t python_env .
 ```
 
-### 8.3 建立docker container 並同時使用volumes和開啟ssh port
+### 9.3 建立docker container 並同時使用volumes和開啟ssh port
 
 ```bash
 docker run --name python_env_container -itd -v $(pwd):/code -p 2200:22 python_env 
 ```
 
-### 8.4 查看container執行時,是否有出錯
+### 9.4 查看container執行時,是否有出錯
 
 ```bash
 docker logs python_env_container
 ```
 
-### 8.5 ssh連線至container
+### 9.5 ssh連線至container
 
 ```bash
 ssh root@127.0.0.1 -p 2200
 ```
 
-## 9. 使用docker compose建立volumes
+## 10. 使用docker compose建立volumes
 
 ```bash
 version: "3.8"
@@ -231,13 +253,13 @@ services:
       - .:/code
 ```
 
-### 9.1 啟動docker-compose
+### 10.1 啟動docker-compose
 
 ```bash
 docker-compose up
 ```
 
-### 9.2 關閉docker-compose
+### 10.2 關閉docker-compose
 
 - **container會被清除**
 
@@ -245,7 +267,7 @@ docker-compose up
 Docker-compose down
 ```
 
-### 9.3 清理docker
+### 10.3 清理docker
 
 ```bash
 docker system prune

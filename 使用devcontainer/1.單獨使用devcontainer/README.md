@@ -54,7 +54,7 @@
 	},
 
 	//設定使用者為root,系統建議不要設為root,可以註解,使用內建的方式設定
-	"remoteUser": "root"
+	//"remoteUser": "root"
 }
 
 ```

@@ -31,7 +31,7 @@
 - [使用python呼叫ollama的api](./ollama/olloma.md)
 
 
-## 8. Docker Compose
+## 8. [Docker Compose](./docker_compose)
 
 ## 9. Docker network
 

@@ -15,8 +15,11 @@ Visual Studio Code (VS Code) 中的 Dev Containers 提供了一種強大的方�
 1. [**單獨使用devcontainer**](./1.單獨使用devcontainer)
 2. [**和Dockerfile整合**](2.devcontainer和Dockerfile)
 3. [**和docker-compose整合**](3.devcontainer和docker-compose)
-4. [**postgres server**](4.建立devcontainer和postgres)
-5. [**mysql server**](5.建立devcontainer和mysql工作環境)
+
+4. [**python,miniconda**](6.python_miniconda)
+
+5. [**postgres server**](4.建立devcontainer和postgres)
+6. [**mysql server**](5.建立devcontainer和mysql工作環境)
 
 ### devcontainer.json架構
 
