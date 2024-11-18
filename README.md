@@ -21,12 +21,7 @@
 
 ## 5. [docker run指令常用的參數](./docker_run)
 
-## 6. docker 常用的指令
-- **檢查目前所有的image**
-- **刪除目前所有的image**
-- **檢查目前的容器**
-- **刪除目前的容器**
-- **刪除所有docker cache**
+## 6. [docker 常用的指令](./docker_command)
 
 ## 7. 建立python的開發環境
 
