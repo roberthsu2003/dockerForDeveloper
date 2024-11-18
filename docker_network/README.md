@@ -112,8 +112,32 @@ docker network disconnect <network_name> <container_ame>
 
 ## 實作範例
 
-```bash
+1. 自訂一個bridge newwork:
 
+```bash
+docker network create my-bridge
+```
+
+2. 在此網路加入2個containers
+
+```bash
+#sleep 1000會在1000秒後
+docker run -d \
+--name container1 \
+--network=my-bridge \
+alpine sleep 1000
+
+
+docker run -d \
+--name container2 \
+--network=my-bridge \
+alpine sleep 1000
+```
+
+3.測試
+
+```bash
+docker exec container1 ping container2
 ```
 
 

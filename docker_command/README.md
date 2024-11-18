@@ -55,7 +55,7 @@ docker volume prune -f
 #移除目前所有的network `-f` 不要提醒
 docker network prune -f
 
-#移除所有沒有使用使用的data(包含images,containers,volumne,and networks
+#移除所有沒有使用使用的data(包含images,containers,volumne,and networks還有下載的build cache
 #`-a`移除所有未使用的images,'--volumes`移除所有未使用的volumes
 docker system prune -a --volumes
 ```
