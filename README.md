@@ -30,7 +30,7 @@
 - [建立ollama服務的docker](./ollama)
 - [使用python呼叫ollama的api](./ollama/olloma.md)
 
-## 8. Docker network
+## 8. [Docker network](./docker_newwork)
 
 ## 9. [Docker Compose](./docker_compose)
 
