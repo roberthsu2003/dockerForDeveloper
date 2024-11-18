@@ -53,9 +53,9 @@ sudo apt install docker-compose
 
 ## JSON轉換為YML格式
 - YML的子結構是以縮排
-- Array使用**-**符號表示
+- Array使用`-`符號表示
 
-```yml
+```yaml
 ---
  doe: "a deer, a female deer"
  ray: "a drop of golden sun"
