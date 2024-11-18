@@ -21,22 +21,25 @@
 
 ## 5. [docker run指令常用的參數](./docker_run)
 
-## 6. 建立python的開發環境
+## 6. docker 常用的指令
+- **檢查目前所有的image**
+- **刪除目前所有的image**
+- **檢查目前的容器**
+- **刪除目前的容器**
+- **刪除所有docker cache**
+
+## 7. 建立python的開發環境
 
 - [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
 - [建立fastapi和redis](./docker/2.建立fastapi和redis)
 
-## 7. 建立ollama的docker
+## 8. 建立ollama的docker
 - [建立ollama服務的docker](./ollama)
 - [使用python呼叫ollama的api](./ollama/olloma.md)
 
-## 8. [Docker network](./docker_network)
+## 9. [Docker network](./docker_network)
 
-## 9. [Docker Compose](./docker_compose)
-
-
-
-## 10. Add more services
+## 10. [Docker Compose](./docker_compose)
 
 ## 11. Debug Python code inside Docker
 
