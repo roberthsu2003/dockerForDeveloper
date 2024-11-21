@@ -56,7 +56,6 @@ sudo apt install docker-compose
 - Array使用`-`符號表示
 
 ```yaml
----
  doe: "a deer, a female deer"
  ray: "a drop of golden sun"
  pi: 3.14159
@@ -76,4 +75,185 @@ sudo apt install docker-compose
      location: "a pear tree"
    turtle-doves: two
 ```
+
+## docker compose 檔案結構
+- 使用Services top-level elements以下為官網網址
+
+> https://docs.docker.com/reference/compose-file/services/
+
+## 實際案例1(建立2個服務mongodb和mongodb express)
+
+- 建立2個Docker containers
+- 使用Docker commands
+
+
+### 1. 不使用Docker Compose的建立方式
+1-1. **建立Docker Network(default bridge)**
+
+```bash
+docker network create mongo-network
+
+#檢查
+docker network ls
+```
+
+
+1-2. **建立MongoDB Container**
+- 搜尋dockerhub Mongo的官方連結
+- mondb的default port:27017
+- 環境變數root_user和root_password(官網有提供)
+	- MONGO_INITDB_ROOT_USERNAME
+	- MONGO_INITDB_ROOT_PASSWORD
+
+```bash
+docker run -d \
+-p 27017:27071 \
+-e MONGO_INITDB_ROOT_USERNAME=admin \
+-e MONGO_INITDB_ROOT_PASSWORD=secret \
+--network mongo-network \
+--name mongodb \
+mongo
+```
+
+```bash
+docker ps
+```
+
+1-3. **建立Mongo Express Container**
+- 搜尋dockerhub Mongo Express的官方連結
+- port:8081
+- 環境變數(進入mogodb的帳號和密碼)
+	- ME_CONFIG_MONGODB_ADMINUSERNAME(帳號)
+	- ME_CONFIG_MONGODB_ADMINPASSWORD(密碼)
+	- ME_CONFIG_MONGODB_SERVER(mongoDB的容器名稱)
+
+```bash
+docker run -d \
+-p 8081:8081 \
+-e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+-e ME_CONFIG_MONGODB_ADMINPASSWORD=secret \
+-e ME_CONFIG_MONGODB_SERVER=mongodb \
+--network mongo-network \
+--name mongo-express \
+mongo-express
+```
+
+```bash
+docker ps
+```
+
+1-4 **使用browser連線至mongo-express**
+1-4 進入mongo-express需要密碼,透過下面命令得到密碼
+
+```bash
+docker logs mongo-express
+
+#===output=====
+admin:pass
+```
+
+1-5 **刪除container network**
+
+```
+#先停止container
+docker stop mongo-express mongodb
+
+#刪除container
+docker rm mongo-express mongodb
+
+#刪除網路
+docker network rm mongo-network
+```
+
+### 2. 使用Docker Compose的建立方式
+
+- 使用Services top-level elements
+![](./images/pic1.png)
+
+2.1 **建立資料夾project**
+2.2 **建立mongo-service.yaml**
+- 可以至官網copy再修改(https://hub.docker.com/_/mongo)
+
+```yaml
+# Use root/example as user/password credentials
+version: '3.1'
+
+version: '3.1'
+
+services:
+
+  mongodb:
+    image: mongo
+    ports:
+	    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+      ME_CONFIG_MONGODB_SERVER: mongodb
+	  depends_on:
+		  - "mongodb"
+```
+
+2.3 **執行docker-compose**
+- `-f`是指定yaml檔案名稱
+- `up`建立
+
+```bash
+docker-compose -f mongo-services.yaml up
+```
+
+2.4 **查看container名稱和網路名稱**
+- 名稱會依據資料夾名稱重新命名
+
+![](./images/pic2.png)
+
+2.5 **讓container進入detach mode**
+
+- 先離開終端機
+
+```bach
+#先離開終端機,container會自動stop
+ctrl + c
+
+#使用detach mode(背景模式)
+docker-compose -f mongo-services.yaml up -d
+```
+
+2.6 **停止和刪除docker-compose建立的container和network**
+
+```bash
+docker-compose -f mongo-services.yaml down
+```
+
+2.7 **停止 docker-compose**
+
+```bash
+#先重新啟動
+docker-compose -f mongo-services.yaml up -d
+
+#停止docker-compose
+docker-compose -f mongo-services.yaml stop
+```
+
+2.8 **啟動docker-compose**
+
+```bash
+docker-compose -f mongo-services.yaml start
+```
+
+
+
+
+
+
+
+
 
