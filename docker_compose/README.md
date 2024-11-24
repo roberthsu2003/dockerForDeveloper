@@ -215,6 +215,12 @@ docker-compose -f mongo-services.yaml up
 
 ![](./images/pic2.png)
 
+2.5 **自訂container名稱的前綴詞,而不是使用資料夾名稱
+
+```bash
+docker-compose --project-name 前綴詞 mongo-services.yaml up
+```
+
 2.5 **讓container進入detach mode**
 
 - 先離開終端機
@@ -248,6 +254,116 @@ docker-compose -f mongo-services.yaml stop
 ```bash
 docker-compose -f mongo-services.yaml start
 ```
+
+
+### 3. 使用環境變數建立docker-compose的安全性
+**先設定暫時的環境變數**
+
+```bash
+export MONGO_ADMIN_USER=admin
+export MONGO_ADMIN_PASS=secret
+```
+
+```bash
+version: '3.1'
+
+services:
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ADMIN_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ADMIN_PASS}
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ADMIN_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ADMIN_PASS}
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      - "mongodb"
+```
+
+```bash
+docker-compose -f mongo-services.yaml -d
+```
+
+### 4. container 日誌(docker logs)
+
+```bash
+docker logs [Options] container
+```
+
+**options**
+- `f`,`--follow`:在寫入新日誌訊息時持續傳輸新日誌訊息。這對於即時監控很有用。
+- `--since`:顯示自特定時間戳記以來的日誌。 (e.g., `--since="2024-11-24T14:00:00"`).
+- `--until`:顯示特定時間戳記之前的日誌.
+- `--tail`:僅顯示日誌的最後 N 行(e.g., `--tail=100`)
+
+#### 4.1 範例
+4.1.1 顯示指定container的所有logs
+
+```bash
+docker logs my_container
+```
+
+4.1.2 即時串流日誌
+
+```bash
+docker logs -f my_container
+```
+
+4.1.3 最後50行日誌
+
+```bash
+docker logs --tail 50 my_container
+```
+
+### 5. docker exec
+您可以在已執行的 Docker 容器中執行命令。此命令對於偵錯、維護任務或與容器環境互動而無需重新啟動容器特別有用。
+
+#### 5.1語法
+
+```bash
+docker exec [Options] container command [ARG...]
+```
+
+- `-i`,`--interactive`:即使未連接，也保持 STDIN 打開.
+- `-t`,`--tty`:分配一個偽 TTY，這對於互動式命令很有用。
+- `d`,`--detach`:在後台運行該命令。
+- `u`,`--user`:指定運行命令的使用者名稱或 UID。
+- `--workdir`:設定容器內的工作目錄。
+
+**範例**
+1. **在container執行命令列**
+
+```bash
+docker exec my_container ls /app
+```
+
+2. 建立一個互動的Shell:
+
+```bash
+docker exec -it my_container /bin/bash
+```
+
+3. 在背景模式執行命令
+
+```bash
+docker exec -d my_container /my-long-running-precess
+```
+
+4. 在指定目錄下執行執行命令
+
+```bash
+docker exec --workdir /opt my_container ls
+```
+
 
 
 
