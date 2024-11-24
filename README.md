@@ -23,19 +23,21 @@
 
 ## 6. [docker 常用的指令](./docker_command)
 
-## 7. 建立python的開發環境
+## 7. [簡單的Docker File範例](./docker_simple_example)
+
+## 8. 建立python的開發環境
 
 - [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
 - [建立fastapi和redis](./docker/2.建立fastapi和redis)
 
-## 8. 建立ollama的docker
+## 9. 建立ollama的docker
 - [建立ollama服務的docker](./ollama)
 - [使用python呼叫ollama的api](./ollama/olloma.md)
 
-## 9. [Docker network](./docker_network)
+## 10. [Docker network](./docker_network)
 
-## 10. [Docker Compose](./docker_compose)
+## 11. [Docker Compose](./docker_compose)
 
-## 11. Debug Python code inside Docker
+## 12. Debug Python code inside Docker
 
-## 12. [VSCode devcontainter](./使用devcontainer)
+## 13. [VSCode devcontainter](./使用devcontainer)
