@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  mysql:
+    image: mysql/mysql-server:8.0
+    environment:
+      MYSQL_DATABASE: 'db'        
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+    ports: 
+      - '3306:3306'
+    volumes: # Volumes to be mounted in the container, used for data persistence
+
+  flaskapp:
+    image: # your image here
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: 'mysql'
+      DATABASE_USER: 'user'
+      DATABASE_PASSWORD: 'password'
+      DATABASE_NAME: 'db'
+    ports: 
+      - '8080:8080'
+volumes:
+   # Define named volumes here. These volumes can be used by services for persistent storage

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grades</title>
+    <link href="{{ url_for('static', filename='grades-stylesheet.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="topnav">
+      <a href="{{ url_for('get_form') }}">Form</a>
+      <a href="{{ url_for('get_grades') }}">Grades</a>
+    </div>
+    <div class="container">
+      <h2>Grades</h2>
+      <table id="table">
+        <tr>
+          <th>Student</th>
+          <th>Subject</th>
+          <th>Score</th>
+          <th>Action</th>
+        </tr>
+        {% for grade in grades %}
+        <tr>
+          <td>{{ grade.name }}</td>
+          <td>{{ grade.subject }}</td>
+          <td>{{ grade.score }}</td>
+          <td><a role="button" class="update" href="{{ url_for('get_form', id=grade.id) }}">Update</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+</body>
+</html>
