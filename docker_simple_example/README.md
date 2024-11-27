@@ -1,5 +1,8 @@
 # 簡單的Docker file範例
-- 依據lessons資料夾
+- 必需先下載lessons.zip檔
+- 依據lessons資夾
+
+![](./images/pic8.png)
 
 ## 範例1-透過Docker_Hub下載python開發環境
 - 直接使用Docker_Hub內python官方網站的python image
@@ -313,3 +316,76 @@ docker run -p 2741:5000 roberthsu2003/grade-submission:flask-0.0.1
 **使用:2741(tcp port)開啟flash 應用程式**
 ![](./images/pic6.png)
 
+## 範例5:建立環境變數(必需結合下一個範例才可以執行)
+- 環境變數經常保留重要的資訊,例如,database的user,password,database_name
+- 由於資訊是重要的,不可能儲存於image內
+- 所以只有在執行container時提供
+
+**檢查目前專案目錄**
+
+![](./images/pic7.png)
+
+**檢查目前應用程式會用到的環境變數**
+- 檢查app.py(查看所有要用的環境變數)
+- 所需要的環境變數有以下
+	- DATABASE_HOST
+	- DATABASE_USER
+	- DATABASE_PASSWORD
+	- DATABASE_NAME
+
+![](./images/pic9.png)
+
+**建立Dockerfile**
+
+```Dockerfile
+FROM python:3.8-slim
+
+WORKDIR /usr/src/
+
+COPY . .
+
+RUN pip install -r flask-mysql/requirements.txt
+
+EXPOSE 3000
+
+CMD ["python", "flask-mysql/app.py"]
+```
+
+
+**建立Docker image**
+
+```bash
+docker build -t flask-mysql:latest .
+```
+
+**建立docker container(沒有提供環境變數)**
+
+- 由於沒有提供環境.app.py執行出現錯誤
+
+```bash
+docker run -p 8000:3000 flask-mysql:latest
+
+#=====output=======
+Traceback (most recent call last):
+  File "flask-mysql/app.py", line 18, in <module>
+    raise RuntimeError(f"Environment variable for '{key}' is not set.")
+RuntimeError: Environment variable for 'host' is not set.
+```
+
+**建立docker container(有提供環境變數)**
+- 依舊會出現錯誤,因為沒有建立mysql server(下一範例會建立mysql server)
+
+```bash
+docker run -p 8000:3000 \
+-e DATABASE_HOST=host.docker.internal \
+-e DATABASE_USER=user \
+-e DATABASE_PASSWORD=password \
+-e DATABASE_NAME=db \
+flask-mysql:latest
+```
+
+**出現沒有連結至mysql的訊息**
+
+![](./images/pic10.png)
+
+## 範例6:建立mysql server
