@@ -374,6 +374,9 @@ RuntimeError: Environment variable for 'host' is not set.
 
 **建立docker container(有提供環境變數)**
 - 依舊會出現錯誤,因為沒有建立mysql server(下一範例會建立mysql server)
+- host.docker.internal->代表container可以直接使用host的網路
+
+**mac,windows系統**
 
 ```bash
 docker run -p 8000:3000 \
@@ -384,8 +387,189 @@ docker run -p 8000:3000 \
 flask-mysql:latest
 ```
 
+**linux系統**
+
+```bash
+docker run -p 8000:3000 \
+--add-host=host.docker.internal:host-gateway \
+-e DATABASE_HOST=host.docker.internal \
+-e DATABASE_USER=user \
+-e DATABASE_PASSWORD=password \
+-e DATABASE_NAME=db \
+flask-mysql:latest
+
+```
+
 **出現沒有連結至mysql的訊息**
 
 ![](./images/pic10.png)
 
 ## 範例6:建立mysql server
+- 使用範例5的範例
+
+**下載mysql image**
+
+```bash
+docker pull mysql/mysql-server:8.0
+```
+
+**建立mysql container**
+
+```bash
+docker docker run \
+-e 'MYSQL_DATABASE=db' \
+-e 'MYSQL_USER=user' \
+-e 'MYSQL_PASSWORD=password' \
+-p 3306:3306 \
+mysql/mysql-server:8.0
+```
+
+**連線flask-mysql:latest**
+- flask-mysql:latest內的app.py成功連線mysql
+
+![](./images/pic11.png)
+
+## 範例7:使用docker-compose完成建立2個container
+
+- 清除所有container和images
+- 依舊使用05-starter-code
+
+**建立Dockerfile**
+
+```bash
+FROM python:3.8-slim
+
+WORKDIR /usr/src/
+
+COPY . .
+
+RUN pip install -r flask-mysql/requirements.txt
+
+EXPOSE 3000
+
+CMD ["python", "flask-mysql/app.py"]
+```
+
+**建立docker images**
+
+```bash
+docker build -t flask-mysql:latest .
+```
+
+**建立docker-compose.yml**
+
+```yaml
+version: '3.3'
+services:
+  mysql:
+    image: mysql/mysql-server:8.0
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+
+  flaskapp:
+    image: flask-mysql:latest
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: 'mysql'
+      DATABASE_USER: 'user'
+      DATABASE_PASSWORD: 'password'
+      DATABASE_NAME: 'db'
+    ports:
+      - '8000:3000'
+```
+
+**執行docker-compose**
+
+```bash
+docker compose up
+```
+
+**測試連線**
+
+![](./images/pic11.png)
+
+**停止docker-compose,並刪除container**
+
+```bash
+docker compose down
+```
+
+## 範例8:建立docker volumes並儲存mysql的資料
+- 使用06-starter-code
+![](./images/pic12.png)
+
+**建立Dockerfile**
+
+```bash
+FROM python:3.8-slim
+
+WORKDIR /usr/src/
+
+COPY . .
+
+RUN pip install -r grade-submission/requirements.txt
+
+EXPOSE 8080
+
+CMD ["python", "grade-submission/app.py"]
+```
+
+**建立docker image**
+
+```bash
+docker build -t grade-submission:0.0.1 .
+```
+
+**建立docker-compose.yml**
+
+```yml
+version: '3.3'
+services:
+  mysql:
+    image: mysql/mysql-server:8.0
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    volumes:
+      - new-db:/var/lib/mysql
+
+  flaskapp:
+    image: grade-submission:0.0.1
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: 'mysql'
+      DATABASE_USER: 'user'
+      DATABASE_PASSWORD: 'password'
+      DATABASE_NAME: 'db'
+    ports:
+      - '8080:8080'
+volumes:
+  new-db:
+```
+
+![](./images/pic13.png)
+
+**執行docker-compose**
+
+```bash
+docker compose up
+```
+
+**檢查docker volumes**
+
+```bash
+docker volume ls
+```
+
+![](./images/pic14.png)
+
+
