@@ -38,6 +38,10 @@ docker rm <container_name>
 ```
 
 - **刪除所有未使用的docker cache**
+- prompt: 如何刪除我擁有的所有 Docker 容器和映像？
+	<details>
+	How do I delete all of the Docker containers and images that I have?
+	</details>
 
 ```
 #1停止目前所有的容器`-q`代表只要顯示id
