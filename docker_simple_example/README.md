@@ -1,6 +1,17 @@
 # 簡單的Docker file範例
-- 必需先下載[lessons.zip](./lessons.zip)檔
+- 必需先下載[lessons.zip]檔
+- 下載網址(https://github.com/roberthsu2003/dockerForDeveloper/raw/refs/heads/main/docker_simple_example/lessons.zip)
+
+```bash
+#下載
+wget https://github.com/roberthsu2003/dockerForDeveloper/raw/refs/heads/main/docker_simple_example/lessons.zip
+
+#解壓縮
+unzip lessons.zip
+```
+
 - 依據lessons資夾
+
 
 ![](./images/pic8.png)
 
@@ -11,6 +22,16 @@
 
 ```bash
 docker pull python:3.11-slim
+
+#==output==
+3.11-slim: Pulling from library/python
+f5c6876bb3d7: Pull complete 
+681f5b8ff801: Pull complete 
+b1227c93bfb7: Pull complete 
+cb08acae466d: Pull complete 
+Digest: sha256:873952659a04188d2a62d5f7e30fd673d2559432a847a8ad5fcaf9cbd085e9ed
+Status: Downloaded newer image for python:3.11-slim
+docker.io/library/python:3.11-slim
 ```
 
 
@@ -19,6 +40,8 @@ docker pull python:3.11-slim
 ```bash
 docker images
 ```
+
+![](./images/pic16.png/a)
 
 **進入01-starter-code目錄,使用pwd查詢目錄的絕對路徑
 
