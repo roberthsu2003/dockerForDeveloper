@@ -295,6 +295,14 @@ docker inspect 685a3901f6e1
 
 
 **上傳至Docker Hub**
+- Prompt:`如何將 Docker 映像推送到 Docker Hub？`
+<details>
+How do I push a Docker image to Docker Hub?
+</details>
+
+```bash
+docker push <your-username>/<your-repo-name>
+```
 
 ```bash
 docker push roberthsu2003/grade-submission:flask-0.0.1
@@ -312,6 +320,10 @@ flask-0.0.1: digest: sha256:1a12cea806601102d4a053c316748721885581be0a991ff0a50f
 ```
 
 **檢查docker hsu內是否有上傳**
+- Prompt:`哪裡可以找到我自己的 docker 映像檔？`
+<details>
+Where can I find my own docker images?
+</details>
 
 ![](./images/pic4.png)
 
@@ -330,8 +342,11 @@ docker inspect roberthsu2003/grade-submission:flask-0.0.1
 ![](./images/pic5.png)
 
 **建立docker container**
+- 其它開發者透過docker inspect,了解有expose 5000
 
--- 其它開發者透過docker inspect,了解有expose 5000
+```bash
+docker inspect <image-name>
+```
 
 ```bash
 docker run -p 2741:5000 roberthsu2003/grade-submission:flask-0.0.1
@@ -341,9 +356,30 @@ docker run -p 2741:5000 roberthsu2003/grade-submission:flask-0.0.1
 ![](./images/pic6.png)
 
 ## 範例5:建立環境變數(必需結合下一個範例才可以執行)
+- 環境變數可以建立於Dockerfile內(不重要的資訊)
+
+```Dockerfile
+FROM node:14
+ENV NODE_ENV=production
+ENV PORT=3000
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+```
+
 - 環境變數經常保留重要的資訊,例如,database的user,password,database_name
 - 由於資訊是重要的,不可能儲存於image內
 - 所以只有在執行container時提供
+
+```Dockerfile
+# -e後的就是環境變數
+docker run -e LOG_SERVER=192.168.0.1 -e USE_UNENCRYPTED_STORAGE=1 alpine:latest sh
+```
+
+- Prompt:`如何在 Docker 中建立環境變數？`
+<details>
+How do I create environment variables within Docker?
+</details>
 
 **檢查目前專案目錄**
 
