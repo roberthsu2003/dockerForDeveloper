@@ -1,5 +1,5 @@
 # 簡單的Docker file範例
-- 必需先下載lessons.zip檔
+- 必需先下載[lessons.zip](./lessons.zip)檔
 - 依據lessons資夾
 
 ![](./images/pic8.png)
@@ -13,7 +13,8 @@
 docker pull python:3.11-slim
 ```
 
-**檢查python:3.11-slim是否被下載至docker cache images
+
+**檢查python:3.11-slim是否被下載至docker cache images**
 
 ```bash
 docker images
@@ -573,3 +574,4 @@ docker volume ls
 ![](./images/pic14.png)
 
 
+ 

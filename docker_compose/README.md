@@ -77,6 +77,7 @@ sudo apt install docker-compose
 ```
 
 ## docker compose 檔案結構
+- docker compose的top-lever有非常多種,這裏只介紹service
 - 使用Services top-level elements以下為官網網址
 
 > https://docs.docker.com/reference/compose-file/services/

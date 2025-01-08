@@ -73,13 +73,22 @@ docker run -it my-image /bin/bash
 
 ## 7. 網路設定
 
-**•	--network：指定容器要連接的網路，方便多容器間通訊。**
+**	--network：指定容器要連接的網路，方便多容器間通訊。**
 
 ```
 docker run -d --network my-network my-image
 ```
 
 > 範例說明：將容器連接到一個自定義的網路 my-network，可以與其他在同網路內的容器通訊。
+
+**--network=host**
+
+- 可以和host共用網路
+- 使用`hostname -I` 可以查看到現在容器的ip address和host的ip address一樣
+
+```
+docker run -d --network=host my-image
+```
 
 ## 8. 自動重啟
 

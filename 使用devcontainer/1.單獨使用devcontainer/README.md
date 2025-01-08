@@ -29,8 +29,8 @@
 		//系統要安裝git
 		"ghcr.io/devcontainers/features/git:1": {}
 	},
-	//設定container名稱為python_chilhlee_api
-	"runArgs":["--name","python_chilhlee_api"],
+	//設定container名稱為python_chilhlee_api,使用host的網路設定
+	"runArgs":["--name","python_chilhlee_api","--network=host"],
 	
 	//使用「forwardPorts」可使容器內的連接埠清單在本機可用。 
 	// "forwardPorts": [],
