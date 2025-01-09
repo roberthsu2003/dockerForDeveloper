@@ -41,3 +41,5 @@
 ## 12. Debug Python code inside Docker
 
 ## 13. [VSCode devcontainter](./使用devcontainer)
+- [單獨安裝python](./使用devcontainer/1.單獨使用devcontainer)
+- [python+mini_conda](./使用devcontainer/6.python_miniconda)
