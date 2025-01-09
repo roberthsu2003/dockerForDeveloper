@@ -15,8 +15,8 @@
 
 ## devcontainer建立的container有以下的設定
 - 安裝miniconda和自訂pythonp版本
-- 安裝git
-- 容器名稱改為"python_chilhlee_api"
+- 安裝git,github cli
+- 容器名稱改為"python_langchain"
 - 安裝vscode的套件-繁體中文套件,python開發套件,jupyter notebook開發套件
 
 **devcontainer.json的內容**
