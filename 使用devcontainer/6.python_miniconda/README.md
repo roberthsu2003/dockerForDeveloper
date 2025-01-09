@@ -98,7 +98,5 @@ RUN if [ -f "/tmp/pip-tmp/requirements.txt" ]; then \
 
 **noop.txt**
 ```
-This file is copied into the container along with environment.yml* from the
-parent folder. This is done to prevent the Dockerfile COPY instruction from 
-failing if no environment.yml is found.
+可以是空的或任何內容
 ```
