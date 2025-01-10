@@ -30,17 +30,18 @@
 - [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
 - [建立fastapi和redis](./docker/2.建立fastapi和redis)
 
-## 9. 建立ollama的docker
-- [建立ollama服務的docker](./ollama)
-- [使用python呼叫ollama的api](./ollama/olloma.md)
+## 9. [Docker network](./docker_network)
 
-## 10. [Docker network](./docker_network)
+## 10. [Docker Compose](./docker_compose)
 
-## 11. [Docker Compose](./docker_compose)
+## 11. Debug Python code inside Docker
 
-## 12. Debug Python code inside Docker
-
-## 13. [VSCode devcontainter](./使用devcontainer)
+## 12. [VSCode devcontainter](./使用devcontainer)
 - [單獨安裝python](./使用devcontainer/1.單獨使用devcontainer)
 - [python+mini_conda](./使用devcontainer/6.python_miniconda)
 - 精靈建立[miniconda+postgreSQL](./使用devcontainer/7.miniconda_postgreSQL)
+
+## 13. 實作案列
+### 建立ollama的docker
+- [建立ollama服務的docker](./ollama)
+- [使用python呼叫ollama的api](./ollama/olloma.md)
