@@ -15,7 +15,6 @@
 - 讓共同開發者在不同平台有**相同開發環境**
 
 ## 3. [簡單的Docker File範例](./docker_simple_example)
-
   
 ## 4. [Dockfile的架構](./docker_file)
 
@@ -25,23 +24,23 @@
 
 ## 7. [docker 常用的指令](./docker_command)
 
-## 8. 建立python的開發環境
+## 8. [Docker network](./docker_network)
 
-- [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
-- [建立fastapi和redis](./docker/2.建立fastapi和redis)
+## 9. [Docker Compose](./docker_compose)
 
-## 9. [Docker network](./docker_network)
+## 10. Debug Python code inside Docker
 
-## 10. [Docker Compose](./docker_compose)
-
-## 11. Debug Python code inside Docker
-
-## 12. [VSCode devcontainter](./使用devcontainer)
+## 11. [VSCode devcontainter](./使用devcontainer)
 - [單獨安裝python](./使用devcontainer/1.單獨使用devcontainer)
 - [python+mini_conda](./使用devcontainer/6.python_miniconda)
 - 精靈建立[miniconda+postgreSQL](./使用devcontainer/7.miniconda_postgreSQL)
 
-## 13. 實作案列
+## 12. 實作案列
+### 建立python的開發環境
+- [建立一個python學習的環境](./docker/1.建立pyhton學習環境)
+- [建立fastapi和redis](./docker/2.建立fastapi和redis)
+
 ### 建立ollama的docker
 - [建立ollama服務的docker](./ollama)
 - [使用python呼叫ollama的api](./ollama/olloma.md)
+
