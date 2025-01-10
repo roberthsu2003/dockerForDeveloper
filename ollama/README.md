@@ -1,4 +1,6 @@
 # 建立ollama
+- [ollama官網安裝說明](https://github.com/ollama/ollama)
+
 ## 1. 下載ollama官方image
 
 ```bash
