@@ -43,4 +43,4 @@
 ### 建立ollama的docker
 - [建立ollama服務的docker](./ollama)
 - [使用python呼叫ollama的api](./ollama/olloma.md)
-
+**太棒了**
