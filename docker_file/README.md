@@ -641,29 +641,52 @@ docker run -p 5000:5000 \
 
 **Dockerfile.dev：**
 ```dockerfile
+# /Users/roberthsu2003/Documents/GitHub/dockerForDeveloper/docker_file/README.md
+
+# 使用完整的 Python 3.11 映像。
+# 相較於 -slim 版本，完整版包含更多編譯工具，
+# 在安裝某些需要編譯的 Python 套件時比較不會出錯，適合開發。
 FROM python:3.11
 
+# 設定容器內的工作目錄為 /app。
+# 後續的指令都會在這個目錄下執行。
 WORKDIR /app
 
-# 安裝開發工具
+# 安裝開發時會用到的工具
+# --upgrade pip 是好習慣，確保 pip 是最新版
 RUN pip install --upgrade pip
+# 安裝測試(pytest)、程式碼格式化(black)、程式碼風格檢查(flake8)、
+# 型別檢查(mypy)、互動式筆記本(jupyter)等開發工具。
 RUN pip install pytest black flake8 mypy jupyter
 
-# 複製需求檔案
+# 複製相依套件需求檔到容器中
+# 這裡把 requirements.txt (正式環境) 和 requirements-dev.txt (開發環境) 都複製進去
 COPY requirements.txt requirements-dev.txt ./
+# 一次性安裝所有正式和開發用的套件
 RUN pip install -r requirements.txt -r requirements-dev.txt
 
-# 設定開發環境變數
+# 設定環境變數，讓 Flask 知道現在是開發模式
+# FLASK_ENV=development 在較新版 Flask 已棄用，但 FLASK_DEBUG=1 仍有效，
+# 會啟用除錯模式和自動重載功能。
 ENV FLASK_ENV=development
 ENV FLASK_DEBUG=1
 
-# 掛載程式碼目錄（在 docker run 時使用 -v）
+# 聲明 /app 目錄為一個掛載點 (Volume)。
+# 這是一個提示，告訴使用者這個目錄預期會從外部掛載進來。
+# 在 `docker run` 指令中，我們用 `-v $(pwd):/app` 實現了這一點，
+# 將本機的程式碼目錄直接對應到容器內的 /app 目錄。
+# 這樣你在本機修改程式碼，容器內會立刻同步，非常方便。
 VOLUME ["/app"]
 
+# 聲明容器會用到的 port。
+# 5000 通常給 Flask 應用程式，8888 給 Jupyter Notebook。
+# 這只是一個文件聲明，實際的 port 映射還是要靠 `docker run -p`。
 EXPOSE 5000 8888
 
-# 預設啟動 bash，方便開發
+# 設定容器啟動時的預設指令。
+# 如上所述，啟動一個 bash shell，等待開發者進行互動操作。
 CMD ["/bin/bash"]
+
 ```
 
 **使用方式：**
