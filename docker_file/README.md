@@ -141,21 +141,68 @@ CMD ["python", "hello.py"]
 
 ## 更多實用範例
 
-### 範例 1：Flask 網頁應用程式
+### 範例 1：基礎 Flask 網頁應用程式
 
-假設你有一個 Flask 應用程式 `app.py`：
+假設你有一個簡單的 Flask 應用程式 `app.py`：
 
 ```python
-from flask import Flask
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    return "Hello from Flask in Docker!"
+def home():
+    return render_template('index.html')
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    user_message = request.json.get('message', '')
+    # 這裡之後會接 LLM API
+    response = f"你說：{user_message}，我收到了！"
+    return jsonify({'response': response})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+```
+
+建立 `templates/index.html`：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的 AI 聊天機器人</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>AI 聊天機器人</h1>
+    <div id="chat-container">
+        <div id="messages"></div>
+        <input type="text" id="user-input" placeholder="輸入訊息...">
+        <button onclick="sendMessage()">送出</button>
+    </div>
+    
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value;
+            if (!message) return;
+            
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: message})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('messages').innerHTML += 
+                    `<p><strong>你：</strong>${message}</p>
+                     <p><strong>AI：</strong>${data.response}</p>`;
+                input.value = '';
+            });
+        }
+    </script>
+</body>
+</html>
 ```
 
 對應的 `requirements.txt`：
@@ -173,8 +220,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 再複製應用程式碼
+# 複製應用程式碼和模板
 COPY app.py .
+COPY templates/ ./templates/
 
 # 聲明使用的 port
 EXPOSE 5000
@@ -185,210 +233,409 @@ CMD ["python", "app.py"]
 
 **執行方式：**
 ```sh
-docker build -t flask-app .
-docker run -p 5000:5000 flask-app
+docker build -t my-chatbot .
+docker run -p 5000:5000 my-chatbot
 ```
 然後在瀏覽器開啟 `http://localhost:5000`
 
-### 範例 2：使用資料庫的應用程式
+### 範例 2：整合 OpenAI API 的聊天機器人
 
-假設你的應用程式需要連接 PostgreSQL 資料庫：
+假設你要建立一個真正能與 AI 對話的聊天機器人：
 
 ```python
-# db_app.py
+# ai_chatbot.py
 import os
-import psycopg2
-from flask import Flask, jsonify
+import openai
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/health')
-def health():
+# 設定 OpenAI API Key（從環境變數讀取）
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+@app.route('/')
+def home():
+    return render_template('chat.html')
+
+@app.route('/api/chat', methods=['POST'])
+def chat_with_ai():
     try:
-        # 從環境變數讀取資料庫連線資訊
-        conn = psycopg2.connect(
-            host=os.getenv('DB_HOST', 'localhost'),
-            database=os.getenv('DB_NAME', 'mydb'),
-            user=os.getenv('DB_USER', 'user'),
-            password=os.getenv('DB_PASSWORD', 'password')
+        user_message = request.json.get('message', '')
+        
+        if not user_message:
+            return jsonify({'error': '請輸入訊息'}), 400
+        
+        # 呼叫 OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "你是一個友善的助手，請用繁體中文回答。"},
+                {"role": "user", "content": user_message}
+            ],
+            max_tokens=150,
+            temperature=0.7
         )
-        conn.close()
-        return jsonify({"status": "healthy", "database": "connected"})
+        
+        ai_response = response.choices[0].message.content
+        return jsonify({'response': ai_response})
+        
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return jsonify({'error': f'發生錯誤：{str(e)}'}), 500
+
+@app.route('/health')
+def health_check():
+    return jsonify({'status': 'healthy', 'service': 'AI Chatbot'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+```
+
+建立 `templates/chat.html`：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI 聊天機器人</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #messages { height: 400px; border: 1px solid #ccc; padding: 10px; overflow-y: scroll; margin-bottom: 10px; }
+        #user-input { width: 70%; padding: 10px; }
+        button { padding: 10px 20px; }
+        .user-msg { color: blue; }
+        .ai-msg { color: green; }
+        .error-msg { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🤖 AI 聊天機器人</h1>
+    <div id="messages"></div>
+    <div>
+        <input type="text" id="user-input" placeholder="輸入你的問題..." onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()">送出</button>
+    </div>
+    
+    <script>
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // 顯示使用者訊息
+            addMessage('你', message, 'user-msg');
+            input.value = '';
+            
+            // 顯示載入中
+            addMessage('AI', '思考中...', 'ai-msg');
+            
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: message})
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 移除載入中訊息
+                const messages = document.getElementById('messages');
+                messages.removeChild(messages.lastChild);
+                
+                if (data.error) {
+                    addMessage('系統', data.error, 'error-msg');
+                } else {
+                    addMessage('AI', data.response, 'ai-msg');
+                }
+            })
+            .catch(error => {
+                addMessage('系統', '連線錯誤，請稍後再試', 'error-msg');
+            });
+        }
+        
+        function addMessage(sender, message, className) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<strong class="${className}">${sender}：</strong>${message}`;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
 ```
 
 `requirements.txt`：
 ```
 Flask==2.3.3
-psycopg2-binary==2.9.7
+openai==0.28.1
+python-dotenv==1.0.0
 ```
 
 **Dockerfile：**
 ```dockerfile
 FROM python:3.11-slim
 
-# 安裝系統相依套件
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
+# 複製需求檔案並安裝套件
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY db_app.py .
-
-# 設定預設環境變數
-ENV DB_HOST=localhost
-ENV DB_NAME=mydb
-ENV DB_USER=user
-ENV DB_PASSWORD=password
-
-EXPOSE 5000
-
-CMD ["python", "db_app.py"]
-```
-
-### 範例 3：多階段建置（Multi-stage Build）
-
-適合需要編譯步驟或想要減少最終映像大小的情況：
-
-**Dockerfile：**
-```dockerfile
-# 第一階段：建置階段
-FROM python:3.11 as builder
-
-WORKDIR /app
-
-# 安裝建置工具
-RUN pip install --upgrade pip setuptools wheel
-
-# 複製並安裝相依套件
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
-
-# 第二階段：執行階段
-FROM python:3.11-slim
-
-# 建立非 root 使用者
-RUN useradd --create-home --shell /bin/bash app
-
-WORKDIR /app
-
-# 從建置階段複製已安裝的套件
-COPY --from=builder /root/.local /home/app/.local
-
 # 複製應用程式碼
-COPY app.py .
+COPY ai_chatbot.py .
+COPY templates/ ./templates/
 
-# 更改檔案擁有者
-RUN chown -R app:app /app
-
-# 切換到非 root 使用者
-USER app
-
-# 確保使用者安裝的套件在 PATH 中
-ENV PATH=/home/app/.local/bin:$PATH
+# 設定環境變數（實際使用時請設定真實的 API Key）
+ENV OPENAI_API_KEY=your_openai_api_key_here
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
-```
-
-### 範例 4：使用 Docker Compose 的完整應用程式
-
-當你的應用程式需要多個服務時，可以使用 Docker Compose：
-
-**docker-compose.yml：**
-```yaml
-version: '3.8'
-
-services:
-  web:
-    build: .
-    ports:
-      - "5000:5000"
-    environment:
-      - DB_HOST=db
-      - DB_NAME=myapp
-      - DB_USER=postgres
-      - DB_PASSWORD=password
-    depends_on:
-      - db
-    volumes:
-      - ./logs:/app/logs
-
-  db:
-    image: postgres:15
-    environment:
-      - POSTGRES_DB=myapp
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
-volumes:
-  postgres_data:
+CMD ["python", "ai_chatbot.py"]
 ```
 
 **執行方式：**
 ```sh
-docker-compose up --build
+# 建置映像
+docker build -t ai-chatbot .
+
+# 執行容器（記得替換成你的真實 API Key）
+docker run -p 5000:5000 -e OPENAI_API_KEY=your_real_api_key ai-chatbot
 ```
 
-### 範例 5：機器學習應用程式
+### 範例 3：使用多種 LLM API 的智能助手
 
-適合需要科學計算套件的 ML 應用：
+這個範例展示如何整合多個 LLM 服務（OpenAI、Anthropic Claude 等）：
+
+```python
+# smart_assistant.py
+import os
+import openai
+import anthropic
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+# 設定 API Keys
+openai.api_key = os.getenv('OPENAI_API_KEY')
+claude_client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+
+@app.route('/')
+def home():
+    return render_template('assistant.html')
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    try:
+        data = request.json
+        user_message = data.get('message', '')
+        model_choice = data.get('model', 'gpt-3.5-turbo')
+        
+        if not user_message:
+            return jsonify({'error': '請輸入訊息'}), 400
+        
+        if model_choice.startswith('gpt'):
+            response = call_openai(user_message, model_choice)
+        elif model_choice.startswith('claude'):
+            response = call_claude(user_message)
+        else:
+            return jsonify({'error': '不支援的模型'}), 400
+            
+        return jsonify({'response': response, 'model': model_choice})
+        
+    except Exception as e:
+        return jsonify({'error': f'發生錯誤：{str(e)}'}), 500
+
+def call_openai(message, model):
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一個專業的程式設計助手，請用繁體中文回答。"},
+            {"role": "user", "content": message}
+        ],
+        max_tokens=300,
+        temperature=0.7
+    )
+    return response.choices[0].message.content
+
+def call_claude(message):
+    response = claude_client.messages.create(
+        model="claude-3-sonnet-20240229",
+        max_tokens=300,
+        messages=[
+            {"role": "user", "content": f"請用繁體中文回答：{message}"}
+        ]
+    )
+    return response.content[0].text
+
+@app.route('/api/models')
+def get_models():
+    return jsonify({
+        'models': [
+            {'id': 'gpt-3.5-turbo', 'name': 'GPT-3.5 Turbo'},
+            {'id': 'gpt-4', 'name': 'GPT-4'},
+            {'id': 'claude-3-sonnet', 'name': 'Claude 3 Sonnet'}
+        ]
+    })
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
+```
+
+建立 `templates/assistant.html`：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>智能程式設計助手</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        #model-select { padding: 8px; }
+        #messages { height: 500px; border: 1px solid #ccc; padding: 15px; overflow-y: scroll; margin-bottom: 15px; background-color: #f9f9f9; }
+        .input-area { display: flex; gap: 10px; }
+        #user-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 12px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .message { margin-bottom: 15px; padding: 10px; border-radius: 8px; }
+        .user-message { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
+        .ai-message { background-color: #f1f8e9; border-left: 4px solid #4caf50; }
+        .error-message { background-color: #ffebee; border-left: 4px solid #f44336; }
+        .model-tag { font-size: 12px; color: #666; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 智能程式設計助手</h1>
+        <select id="model-select">
+            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+            <option value="gpt-4">GPT-4</option>
+            <option value="claude-3-sonnet">Claude 3 Sonnet</option>
+        </select>
+    </div>
+    
+    <div id="messages"></div>
+    
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="詢問程式設計問題..." onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()">送出</button>
+    </div>
+    
+    <script>
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const modelSelect = document.getElementById('model-select');
+            const message = input.value.trim();
+            const selectedModel = modelSelect.value;
+            
+            if (!message) return;
+            
+            // 顯示使用者訊息
+            addMessage('你', message, 'user-message');
+            input.value = '';
+            
+            // 顯示載入中
+            addMessage('AI', '思考中...', 'ai-message');
+            
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    message: message,
+                    model: selectedModel
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 移除載入中訊息
+                const messages = document.getElementById('messages');
+                messages.removeChild(messages.lastChild);
+                
+                if (data.error) {
+                    addMessage('系統', data.error, 'error-message');
+                } else {
+                    addMessage('AI', data.response, 'ai-message', data.model);
+                }
+            })
+            .catch(error => {
+                const messages = document.getElementById('messages');
+                messages.removeChild(messages.lastChild);
+                addMessage('系統', '連線錯誤，請稍後再試', 'error-message');
+            });
+        }
+        
+        function addMessage(sender, message, className, model = '') {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            
+            const modelTag = model ? `<span class="model-tag">[${model}]</span>` : '';
+            messageDiv.innerHTML = `<strong>${sender}${modelTag}：</strong><br>${message.replace(/\n/g, '<br>')}`;
+            
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
+```
+
+`requirements.txt`：
+```
+Flask==2.3.3
+openai==0.28.1
+anthropic==0.3.11
+python-dotenv==1.0.0
+gunicorn==21.2.0
+```
 
 **Dockerfile：**
 ```dockerfile
 FROM python:3.11-slim
 
-# 安裝系統相依套件
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libhdf5-dev \
-    libopenblas-dev \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
-# 複製需求檔案
+# 複製需求檔案並安裝套件
 COPY requirements.txt .
-
-# 安裝 Python 套件
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 複製模型檔案和應用程式碼
-COPY models/ ./models/
-COPY predict.py .
+# 複製應用程式碼
+COPY smart_assistant.py .
+COPY templates/ ./templates/
 
-# 建立輸出目錄
-RUN mkdir -p /app/output
+# 設定環境變數
+ENV OPENAI_API_KEY=your_openai_api_key
+ENV ANTHROPIC_API_KEY=your_anthropic_api_key
 
-EXPOSE 8000
+EXPOSE 5000
 
-# 使用 gunicorn 作為 WSGI 伺服器
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "predict:app"]
+# 生產環境使用 gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "smart_assistant:app"]
 ```
 
-對應的 `requirements.txt`：
-```
-numpy==1.24.3
-pandas==2.0.3
-scikit-learn==1.3.0
-flask==2.3.3
-gunicorn==21.2.0
+**執行方式：**
+```sh
+# 建置映像
+docker build -t smart-assistant .
+
+# 執行容器
+docker run -p 5000:5000 \
+  -e OPENAI_API_KEY=your_real_openai_key \
+  -e ANTHROPIC_API_KEY=your_real_anthropic_key \
+  smart-assistant
 ```
 
-### 範例 6：開發環境 Dockerfile
+### 範例 4：開發環境 Dockerfile
 
 適合開發時使用，包含開發工具：
 
