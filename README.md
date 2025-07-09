@@ -10,20 +10,20 @@
 
 - **建立虛擬環境**
 - **建立完全獨立環境專案,並提供該專案所有附屬套件**
-- 可建立多個服務,如資料庫服務
-- 容易部署和發佈
+- **可建立多個服務,如資料庫服務**
+- **容易部署和發佈**
 - 讓共同開發者在不同平台有**相同開發環境**
 
-## 3. [簡單的Docker File範例](./docker_simple_example)
+## 3. [Dockfile的架構](./docker_file)
+
+## 4. [docker build指令常用的參數](./docker_build)
+
+## 5. [docker run指令常用的參數](./docker_run)
+
+## 6. [docker 常用的指令](./docker_command)
+
+## 7. [簡單的Docker File範例](./docker_simple_example)
   
-## 4. [Dockfile的架構](./docker_file)
-
-## 5. [docker build指令常用的參數](./docker_build)
-
-## 6. [docker run指令常用的參數](./docker_run)
-
-## 7. [docker 常用的指令](./docker_command)
-
 ## 8. [Docker network](./docker_network)
 
 ## 9. [Docker Compose](./docker_compose)
