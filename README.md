@@ -14,21 +14,23 @@
 - **容易部署和發佈**
 - 讓共同開發者在不同平台有**相同開發環境**
 
-## 3. [Dockfile的架構](./docker_file)
+## 3. [直接使用Docker Hub內現有的映像檔](./直接使用Docker Hub內現有的映像檔)
 
-## 4. [docker build指令常用的參數](./docker_build)
+## 4. [Dockfile的架構](./docker_file)
 
-## 5. [docker run指令常用的參數](./docker_run)
+## 5. [docker build指令常用的參數](./docker_build)
 
-## 6. [docker 常用的指令](./docker_command)
+## 6. [docker run指令常用的參數](./docker_run)
 
-## 7. [簡單的Docker File範例](./docker_simple_example)
+## 7. [docker 常用的指令](./docker_command)
+
+## 8. [簡單的Docker File範例](./docker_simple_example)
   
-## 8. [Docker network](./docker_network)
+## 9. [Docker network](./docker_network)
 
-## 9. [Docker Compose](./docker_compose)
+## 10. [Docker Compose](./docker_compose)
 
-## 10. Debug Python code inside Docker
+## 11. Debug Python code inside Docker
 
 ## 11. [VSCode devcontainter](./使用devcontainer)
 - [單獨安裝python](./使用devcontainer/1.單獨使用devcontainer)
