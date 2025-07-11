@@ -128,7 +128,7 @@ docker run -d -p 8080:80 nginx
    - `docker run`: 建立並執行容器。
    - `-it`: 啟動互動式終端機。
    - `-v $(pwd):/app`: 將本機目錄掛載到容器內的 `/app`。
-   - `-w /app`: 設定容器內的工作目錄。
+   - `-w /app`: 設定容器內的工作目錄,會影響後續指令的執行路徑,如果不設定，默認為容器的根目錄,啟動容器後，您會在 `/app` 目錄下執行指令。
    - `python:3.11-slim`: 指定映像檔。
    - `python`: 執行Python互動式直譯器或腳本。
 
@@ -144,10 +144,31 @@ docker run -d -p 8080:80 nginx
    ```bash
    # 啟動Jupyter Notebook
    docker run -p 8888:8888 continuumio/miniconda3 jupyter notebook --ip=0.0.0.0 --allow-root
-   
+   ```
+
+   **用途**：
+   - 該指令用於啟動一個基於 Miniconda 的容器，並在容器內啟動 Jupyter Notebook 服務。
+   - 映射本機埠 `8888` 到容器內的埠 `8888`，使您可以通過瀏覽器訪問 Jupyter Notebook。
+   - 適合用於數據分析、機器學習或科學計算等需要互動式編程的場景。
+
+   ```bash
    # 進入容器安裝套件
    docker run -it continuumio/miniconda3 bash
    ```
+
+   **指令詳解**：
+   - `docker run`: 建立並執行容器。
+   - `-p 8888:8888`: 將容器的埠8888映射到本機的埠8888，這樣您可以通過瀏覽器訪問Jupyter Notebook。
+     - 左側的 `8888` 是本機埠號，右側的 `8888` 是容器內的埠號。
+   - `continuumio/miniconda3`: 指定使用的映像檔名稱。
+   - `jupyter notebook --ip=0.0.0.0 --allow-root`:
+     - 啟動Jupyter Notebook服務。
+     - `--ip=0.0.0.0`：允許所有IP地址訪問容器內的Jupyter Notebook。
+     - `--allow-root`：允許以root身份運行Jupyter Notebook（通常在容器內需要這樣做）。
+   - `-it`: 啟動互動式終端機。
+     - `-i`：保持標準輸入開啟，允許與容器交互。
+     - `-t`：分配一個虛擬終端機。
+   - `bash`: 進入容器內的Shell環境，允許您手動執行命令或安裝套件。
 
 ### 範例3：PostgreSQL
 
@@ -230,14 +251,6 @@ Docker Hub是學習和使用Docker的重要資源。透過本教學，您應該�
 - 如何查看映像檔的詳細資訊和使用說明
 - 如何下載和使用不同類型的映像檔
 - 如何選擇適合的映像檔版本和標籤
-2. **進階練習**：
-   - 比較 `python:3.11` 和 `python:3.11-slim` 的大小差異
-   - 使用 `nginx` 映像檔建立一個簡單的網頁伺服器
-
-3. **實戰練習**：
-   - 組合使用多個映像檔建立一個完整的應用環境
-   - 例如：前端(nginx) + 後端(python) + 資料庫(postgres)
-
 ## 總結
 
 Docker Hub是學習和使用Docker的重要資源。透過本教學，您應該已經學會：
