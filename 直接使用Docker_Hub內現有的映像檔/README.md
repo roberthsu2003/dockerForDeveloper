@@ -122,6 +122,21 @@ docker run -d -p 8080:80 nginx
    
    # 執行Python腳本（假設腳本在當前目錄）
    docker run -v $(pwd):/app -w /app python:3.11-slim python script.py
+   
+   > **指令詳解**:
+   > 這個指令非常適合開發，它能在一個乾淨的 Docker 環境中，直接執行你本機的 Python 腳本，無需每次修改都重新建置映像檔。
+   >
+   > - `docker run`: 建立並執行一個新的容器。
+   > - `-v $(pwd):/app`: **掛載資料卷 (Volume)**，這是最關鍵的部分。
+   >   - `-v` 是 `--volume` 的縮寫。
+   >   - `$(pwd)`: 這是一個 Shell 指令，會取得您**本機當前的工作目錄** (Present Working Directory)。
+   >   - `:/app`: 將本機目錄對應到容器內的 `/app` 目錄。
+   >   - **效果**: 這會建立一個「共享資料夾」。您在本機對程式碼的任何修改，都會即時同步到容器內，反之亦然。
+   > - `-w /app`: **設定工作目錄 (Working Directory)**。
+   >   - `-w` 是 `--workdir` 的縮寫。
+   >   - 這會將容器的預設路徑設定為 `/app`。後續的指令（如 `python script.py`）就會在這個目錄下執行。
+   > - `python:3.11-slim`: 指定用來建立容器的**映像檔**，這裡使用的是輕量化的 Python 3.11 版本。
+   > - `python script.py`: 這是在容器內要**執行的指令**。因為工作目錄已設為 `/app`，且該目錄已與本機程式碼同步，所以容器能直接找到並執行 `script.py`。
    ```
 
 ### 範例2：Miniconda3
