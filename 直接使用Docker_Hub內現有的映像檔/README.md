@@ -119,25 +119,18 @@ docker run -d -p 8080:80 nginx
    ```bash
    # 執行Python互動式環境
    docker run -it python:3.11-slim python
-   
+
    # 執行Python腳本（假設腳本在當前目錄）
    docker run -v $(pwd):/app -w /app python:3.11-slim python script.py
-   
-   > **指令詳解**:
-   > 這個指令非常適合開發，它能在一個乾淨的 Docker 環境中，直接執行你本機的 Python 腳本，無需每次修改都重新建置映像檔。
-   >
-   > - `docker run`: 建立並執行一個新的容器。
-   > - `-v $(pwd):/app`: **掛載資料卷 (Volume)**，這是最關鍵的部分。
-   >   - `-v` 是 `--volume` 的縮寫。
-   >   - `$(pwd)`: 這是一個 Shell 指令，會取得您**本機當前的工作目錄** (Present Working Directory)。
-   >   - `:/app`: 將本機目錄對應到容器內的 `/app` 目錄。
-   >   - **效果**: 這會建立一個「共享資料夾」。您在本機對程式碼的任何修改，都會即時同步到容器內，反之亦然。
-   > - `-w /app`: **設定工作目錄 (Working Directory)**。
-   >   - `-w` 是 `--workdir` 的縮寫。
-   >   - 這會將容器的預設路徑設定為 `/app`。後續的指令（如 `python script.py`）就會在這個目錄下執行。
-   > - `python:3.11-slim`: 指定用來建立容器的**映像檔**，這裡使用的是輕量化的 Python 3.11 版本。
-   > - `python script.py`: 這是在容器內要**執行的指令**。因為工作目錄已設為 `/app`，且該目錄已與本機程式碼同步，所以容器能直接找到並執行 `script.py`。
    ```
+
+   **指令詳解**：
+   - `docker run`: 建立並執行容器。
+   - `-it`: 啟動互動式終端機。
+   - `-v $(pwd):/app`: 將本機目錄掛載到容器內的 `/app`。
+   - `-w /app`: 設定容器內的工作目錄。
+   - `python:3.11-slim`: 指定映像檔。
+   - `python`: 執行Python互動式直譯器或腳本。
 
 ### 範例2：Miniconda3
 
@@ -222,6 +215,21 @@ docker run -d -p 8080:80 nginx
    - 搜尋並下載 `hello-world` 映像檔
    - 執行該映像檔並觀察輸出結果
 
+2. **進階練習**：
+   - 比較 `python:3.11` 和 `python:3.11-slim` 的大小差異
+   - 使用 `nginx` 映像檔建立一個簡單的網頁伺服器
+
+3. **實戰練習**：
+   - 組合使用多個映像檔建立一個完整的應用環境
+   - 例如：前端(nginx) + 後端(python) + 資料庫(postgres)
+
+## 總結
+
+Docker Hub是學習和使用Docker的重要資源。透過本教學，您應該已經學會：
+- 如何在Docker Hub上搜尋和瀏覽映像檔
+- 如何查看映像檔的詳細資訊和使用說明
+- 如何下載和使用不同類型的映像檔
+- 如何選擇適合的映像檔版本和標籤
 2. **進階練習**：
    - 比較 `python:3.11` 和 `python:3.11-slim` 的大小差異
    - 使用 `nginx` 映像檔建立一個簡單的網頁伺服器
