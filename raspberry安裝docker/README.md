@@ -44,9 +44,15 @@ sudo apt install -y \
 ```
 
 ### 2. 檢查系統架構
+
+請先確認您的作業系統與架構，這樣才能在 Docker Hub 上找到相容且正確的映像檔。
+
+> aarch64 代表 "ARM Architecture 64-bit"。
+> aarch64 是 ARM 公司推出的 ARMv8-A 指令集架構 中 64 位元執行狀態的名稱。
+
 ```bash
 # 檢查系統架構
-uname -m
+uname -m #aarch64
 
 # 檢查作業系統版本
 lsb_release -a
@@ -56,7 +62,7 @@ lsb_release -a
 
 ## 📦 安裝步驟
 
-### 方法一：使用官方安裝腳本 (推薦)
+### 方法：使用官方安裝腳本 (推薦)
 
 #### 1. 下載並執行 Docker 官方安裝腳本
 ```bash
@@ -76,41 +82,6 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-### 方法二：手動安裝
-
-#### 1. 新增 Docker 官方 GPG 金鑰
-```bash
-# 新增 GPG 金鑰
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-```
-
-#### 2. 新增 Docker 軟體庫
-```bash
-# 新增軟體庫
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-#### 3. 安裝 Docker Engine
-```bash
-# 更新套件清單
-sudo apt update
-
-# 安裝 Docker Engine
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
-#### 4. 啟動並啟用 Docker 服務
-```bash
-# 啟動 Docker 服務
-sudo systemctl start docker
-
-# 設定開機自動啟動
-sudo systemctl enable docker
-```
-
----
 
 ## ✅ 驗證安裝
 
@@ -120,13 +91,11 @@ sudo systemctl enable docker
 docker --version
 
 # 檢查 Docker Compose 版本
-docker compose version
+docker-compose --version
 ```
 
 ### 2. 測試 Docker 是否正常運作
 ```bash
-# 執行 Hello World 容器
-docker run hello-world
 
 # 檢查 Docker 系統資訊
 docker system info

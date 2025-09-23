@@ -119,6 +119,16 @@ docker run -d -p 8080:80 nginx
    ```bash
    # 執行Python互動式環境
    docker run -it python:3.11-slim python
+   
+   # 指令解譯：
+   # docker run -it python:3.11-slim python
+   #
+   # - `docker run`：建立並執行一個新的容器。
+   # - `-it`：啟動互動式終端機（-i 保持標準輸入開啟，-t 分配一個虛擬終端）。
+   # - `python:3.11-slim`：指定要使用的映像檔（這裡是官方 Python 3.11 的精簡版）。
+   # - `python`：在容器內執行 Python 直譯器，進入互動式 Python 命令列。
+   #
+   # 執行這個指令後，您會進入一個可以直接輸入 Python 指令的互動式環境，非常適合用來測試 Python 程式碼或學習 Python。
 
    # 執行Python腳本（假設腳本在當前目錄）
    docker run -v $(pwd):/app -w /app python:3.11-slim python script.py
