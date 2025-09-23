@@ -245,6 +245,8 @@ mkdir -p $HOME/mongodb-data
 
 **第 2 步：執行 Docker 指令來啟動 MongoDB**
 
+> 因為樹莓派所以使用mongo:4.4.18 
+
 接下來，複製並執行以下指令。請務必將 YOUR_STRONG_PASSWORD 替換成您自己的高強度密碼。
 
 ```
