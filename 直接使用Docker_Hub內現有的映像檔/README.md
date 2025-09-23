@@ -223,6 +223,87 @@ docker run -d -p 8080:80 nginx
    password(密碼) -> raspberry
    ```
 
+### 範例4：MongoDB
+
+1. **搜尋**：搜尋 "MongoDB"
+2. **選擇**：選擇官方的 "MongoDB" 映像檔(樹莓派4.4.18)
+3. **查看文件**：了解必要的環境變數設定
+4. **下載**： 
+5. **使用**:
+
+**第 1 步：建立一個本地資料夾來存放數據**
+
+首先，我們需要在樹莓派上建立一個資料夾，用來永久保存 MongoDB 的數據。這樣即使您刪除或重建 Docker 容器，您的資料庫內容也不會遺失。
+
+```
+mkdir -p $HOME/mongodb-data
+```
+
+- mkdir -p 會建立 mongodb-data 資料夾（如果它不存在的話）。
+
+- $HOME 代表您目前使用者的家目錄 (例如 /home/pi)。
+
+**第 2 步：執行 Docker 指令來啟動 MongoDB**
+
+接下來，複製並執行以下指令。請務必將 YOUR_STRONG_PASSWORD 替換成您自己的高強度密碼。
+
+```
+docker run -d \
+   --name my-mongodb \
+   -p 27017:27017 \
+   -v $HOME/mongodb-data:/data/db \
+   -e MONGO_INITDB_ROOT_USERNAME=myuser \
+   -e MONGO_INITDB_ROOT_PASSWORD=YOUR_STRONG_PASSWORD \
+   --restart unless-stopped \
+   mongo:4.4.18
+```
+
+**指令參數詳解**
+
+讓我們來分解一下這個指令的各個部分，這樣您就能明白它的作用：
+
+- docker run: 這是啟動一個新容器的基礎指令。
+
+- -d: Detached 模式，讓容器在背景執行。
+
+- --name my-mongodb: 為您的容器取一個好記的名稱，方便日後管理。
+
+- -p 27017:27017: 端口映射。將樹莓派主機的 27017 埠映射到容器內部的 27017 埠。這樣您就可以從樹莓派的其他應用程式連接到這個資料庫了。
+
+- -v $HOME/mongodb-data:/data/db: 掛載儲存卷 (Volume)。這是實現資料持久化的關鍵。它將我們剛才建立的 $HOME/mongodb-data 資料夾掛載到容器內部存放資料庫檔案的 /data/db 路徑。
+
+- -e MONGO_INITDB_ROOT_USERNAME=myuser: 設定環境變數。設定 MongoDB 的初始 root 使用者名稱為 myuser。
+
+- -e MONGO_INITDB_ROOT_PASSWORD=YOUR_STRONG_PASSWORD: 設定 MongoDB 的初始 root 使用者密碼。請務必更換成您自己的安全密碼！
+
+- --restart unless-stopped: 自動重啟。這是一個很好的策略，確保 Docker 服務啟動或樹莓派重開機時，這個容器也會自動啟動，除非您手動將它停止。
+
+- mongo: 要使用的 Docker 映像檔名稱。Docker 會自動抓取支援您樹莓派 (aarch64) 架構的版本。
+
+**第 3 步：驗證與連線**
+
+1. 檢查容器狀態：
+
+```
+docker ps
+```
+
+2. 查看日誌:
+
+```
+docker logs my-mongodb
+```
+
+
+**第4步 使用Mongo Compass連線方式**:
+
+- myuser, YOUR_STRONG_PASSWORD,localhost:要依據建立的方式更新
+
+```
+mongodb://myuser:YOUR_STRONG_PASSWORD@localhost:27017/
+```
+
+
 ## 常用映像檔推薦
 
 ### 程式語言
