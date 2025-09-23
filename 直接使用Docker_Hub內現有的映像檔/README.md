@@ -119,7 +119,7 @@ docker run -d -p 8080:80 nginx
    ```bash
    # 執行Python互動式環境
    docker run -it python:3.11-slim python
-   
+
    # 指令解譯：
    # docker run -it python:3.11-slim python
    #
@@ -196,10 +196,31 @@ docker run -d -p 8080:80 nginx
      -e POSTGRES_PASSWORD=mypassword \
      -e POSTGRES_DB=mydatabase \
      -p 5432:5432 \
-     -d postgres
+     -d 
+     postgres
    
+   **指令解釋：**
+
+   這條指令會啟動一個 PostgreSQL 資料庫容器，並進行以下設定：
+
+   - `docker run`：建立並執行一個新的容器。
+   - `--name my-postgres`：將這個容器命名為 `my-postgres`，方便後續管理與操作。
+   - `-e POSTGRES_PASSWORD=mypassword`：設定資料庫的管理者密碼為 `mypassword`。這是 PostgreSQL 映像檔啟動時必須指定的環境變數。
+   - `-e POSTGRES_DB=mydatabase`：啟動時自動建立一個名為 `mydatabase` 的資料庫。
+   - `-p 5432:5432`：將本機的 5432 埠對應到容器內的 5432 埠。這樣可以讓本機或其他應用程式連接到這個資料庫服務。
+   - `-d`：讓容器在背景（detached mode）執行，不會佔用目前的終端機。
+   - `postgres`：指定要使用的映像檔名稱（這裡是官方的 PostgreSQL 映像檔）。
+
+   **簡單來說，這條指令會在本機啟動一個 PostgreSQL 資料庫服務，並設定好密碼與預設資料庫，方便你直接連線使用。**
+
+
    # 連接到資料庫
    docker exec -it my-postgres psql -U postgres -d mydatabase
+
+   # 使用dbeaver的連線方式
+   URL設定方式 -> jdbc:postgresql://10.170.1.218:5432/mydatabase
+   username(使用預設) -> postgres
+   password(密碼) -> raspberry
    ```
 
 ## 常用映像檔推薦
