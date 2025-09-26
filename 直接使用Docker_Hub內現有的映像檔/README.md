@@ -1,15 +1,21 @@
 # Docker Hub 使用教學指南
 
-本教學將帶您了解如何使用Docker Hub網站來查看、搜尋和使用Docker映像檔。
+了解如何使用Docker Hub網站來查看、搜尋和使用Docker映像檔。
 
 ## 目錄
-1. [什麼是Docker Hub](#什麼是docker-hub)
-2. [如何訪問Docker Hub](#如何訪問docker-hub)
-3. [搜尋映像檔](#搜尋映像檔)
-4. [查看映像檔詳細資訊](#查看映像檔詳細資訊)
-5. [下載和使用映像檔](#下載和使用映像檔)
-6. [實作範例](#實作範例)
-7. [常用映像檔推薦](#常用映像檔推薦)
+1. [什麼是Docker 映像檔](#什麼是docker-映像檔)
+2. [什麼是Docker Hub](#什麼是docker-hub)
+3. [如何訪問Docker Hub](#如何訪問docker-hub)
+4. [搜尋映像檔](#搜尋映像檔)
+5. [查看映像檔詳細資訊](#查看映像檔詳細資訊)
+6. [下載和使用映像檔](#下載和使用映像檔)
+7. [實作範例](#實作範例)
+8. [常用映像檔推薦](#常用映像檔推薦)
+## 什麼是Docker 映像檔
+
+Docker 映像檔（Image）是 Docker 用來建立容器（Container）的模板。它包含了運行應用程式所需的一切，包括程式碼、運行時環境、系統工具和庫等。
+
+- 想像Image就是要安裝電腦作業系統時的光碟片
 
 ## 什麼是Docker Hub
 
@@ -93,13 +99,59 @@ docker images
 ### 3. 執行容器
 ```bash
 # 基本執行
+
+> 執行一個基於 python 映像檔的容器（預設會執行 python 直譯器，通常container會自動結束）
+> 下方會自動下載python:latest的映像檔,並且執行建立一個容器,並且執行python直譯器
+
 docker run python
 
+> 可以使用`docker images`查詢已下載的映像檔
+> 可以使用`docker ps`查詢正在執行的container
+> 可以使用`docker ps -a`查詢所有container
+```
+
+```bash
 # 互動式執行
+> 如果執行 docker run -it python 而省略了 bash，Docker 會執行該映像檔 (image) 預設的指令 (Default Command)。對於官方的 python 映像檔來說，它的預設指令就是啟動 Python 的互動式直譯器 (REPL)。
+
 docker run -it python bash
 
+```
+
+```bash
 # 背景執行並映射埠口
 docker run -d -p 8080:80 nginx
+
+> 指令拆解
+> 讓我們來分解這個指令的每一個部分：docker run -d -p 8080:80 nginx
+
+> docker run
+
+> 這是最基本的指令，用來從一個映像檔 (image) 建立並啟動一個新的容器 (container)。
+
+> -d 或 --detach
+
+> 這是「分離模式 (detached mode)」的意思。
+
+> 它會讓容器在背景中執行，而不是佔據你目前的終端機視窗。指令執行後，你會立刻拿回你的命令提示字元，可以繼續做其他事。
+
+> 這與我們之前用的 -it (互動模式) 相反，-d 非常適合用來執行像網頁伺服器、資料庫這類需要長時間運行的服務。
+
+> -p 8080:80 或 --publish
+
+> 這是「發布 (publish)」或「連接埠映射 (port mapping)」的意思，是這個指令最關鍵的部分。
+
+> 它的格式是 [本機電腦的 Port]:[容器內的 Port]。
+
+> 8080 (本機 Port): 這是你自己電腦對外開放的連接埠。你可以把它想像成你家大樓的門牌號碼。你可以把它改成任何你電腦上未被佔用的 Port，例如 3000、8888 等。
+
+> 80 (容器 Port): 這是 Nginx 應用程式在容器內部監聽的預設連接埠。Nginx 作為一個 HTTP 網頁伺服器，預設就是在 80 Port 提供服務。
+
+> 整個 -p 8080:80 的意思就是：「請把所有送到我電腦 8080 Port 的網路流量，全部轉發到這個容器裡的 80 Port。」
+
+nginx
+
+> 這是你要使用的映像檔 (image) 名稱。Docker 會尋找本地是否有名為 nginx 的映像檔，如果沒有，它會自動從 Docker Hub 公共倉庫下載官方的 Nginx 映像檔。
 ```
 
 ## 實作範例
