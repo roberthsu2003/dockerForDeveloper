@@ -78,7 +78,7 @@ sudo sh get-docker.sh
 # 將目前使用者加入 docker 群組
 sudo usermod -aG docker $USER
 
-# 重新載入群組設定 (需要重新登入)
+# 立即讓群組設定生效（執行後，無需登出即可讓 $USER 擁有 docker 權限）
 newgrp docker
 ```
 
