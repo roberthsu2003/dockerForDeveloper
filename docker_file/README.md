@@ -1,6 +1,6 @@
 # Dockerfile 介紹（Python 版）
 
-Dockerfile 是一個用來自動建立 Docker 容器映像的文字檔。對於 Python 開發者來說，Dockerfile 可以幫助你快速建立一個乾淨、一致的 Python 執行環境，讓你的程式在任何電腦上都能順利執行。
+Dockerfile 是一個用來自動建立 Docker 映像檔案的文字檔。對於 Python 開發者來說，Dockerfile 可以幫助你快速建立一個乾淨、一致的 Python 執行環境，讓你的程式在任何電腦上都能順利執行。
 
 ## 為什麼要用 Dockerfile？
 
